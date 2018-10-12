@@ -21,6 +21,8 @@ public class SQLHandler {
 	private Connection connection;
 	private ConnectionInfo ci;
 
+	
+	//Test
 	// Unused
 	private static int highID;
 	private Set<PlayerSign> activeSigns;
