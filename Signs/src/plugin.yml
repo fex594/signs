@@ -1,0 +1,11 @@
+name: Signs
+main: fex.signs.signs.Main
+version: 1.0
+author: fex594
+database: true
+api-version: 1.13
+commands:
+   signs:
+      description: Universalbefehl des Schilderplugins
+      usage: </signs>
+      aliases: [asi, s, sign]
