@@ -13,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import fex.signs.signs.SQL_Connection;
 import fex.signs.util.PlayerSign;
 
 public class SignClickListener extends MyListener implements Listener {
@@ -34,12 +33,11 @@ public class SignClickListener extends MyListener implements Listener {
 					if (firstLine.equalsIgnoreCase("§4[Bauregeln]") || (firstLine.equalsIgnoreCase("�§[Verschönern]"))
 							|| (firstLine.equalsIgnoreCase("§4[Abriss]"))
 							|| (firstLine.equalsIgnoreCase("§4[Weiterbauen]"))) {
-						String message = null;
 						for(PlayerSign ps: _sql.active) {
 							int ID = Integer.parseInt(s.getLine(1).replace("§2#", ""));
 							if(ps.getID()== ID){
 								String out = "";
-								if(ps.getBesitzerUUID().equals(e.getPlayer().getUniqueId()) || e.getPlayer().hasPermission("signs.support")) {
+								if(ps.getBesitzerUUID().equals(e.getPlayer().getUniqueId().toString()) || e.getPlayer().hasPermission("signs.support")) {
 										int act = ps.getActive();
 										String active = "";
 										if (act == 1) {
