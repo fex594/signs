@@ -12,9 +12,9 @@ import fex.signs.signs.SQL_Connection;
 
 public class BlockBreakListener extends MyListener implements Listener {
 
-	public BlockBreakListener(SQL_Connection sql) {
-		super(sql);
-	}
+//	public BlockBreakListener(SQL_Connection sql) {
+//		super(sql);
+//	}
 
 	/**
 	 * Wird getriggert, wenn ein Block abgebaut wird

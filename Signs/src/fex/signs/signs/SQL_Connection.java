@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 
 import fex.signs.util.ConnectionInfo;
 
+@Deprecated
 public final class SQL_Connection {
 	private Connection connection;
 
@@ -80,7 +81,7 @@ public final class SQL_Connection {
 					int act = result.getInt("Active");
 					String active = "";
 					if (act == 1) {
-						DateFormat df = new SimpleDateFormat("dd/MM/YYYY");
+						DateFormat df = new SimpleDateFormat("dd.MM.YYYY");
 						String date = df.format(result.getDate("Datum")).toString();
 						active = "läuft am §2" + date + "§6 ab";
 					} else {

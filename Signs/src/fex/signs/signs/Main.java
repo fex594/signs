@@ -17,7 +17,7 @@ import fex.signs.listeners.*;
 import fex.signs.util.Messages;
 
 public class Main extends JavaPlugin {
-	private SQL_Connection connection;				//SQL Verbindung
+//	private SQL_Connection connection;				//SQL Verbindung
 	private boolean sqlConnected;					//Ist eine Verbundung hergestellt?
 	private Messages mess;							//Nachrichtensystem an User und Konsole
 	private final String version = "1.0";
@@ -26,16 +26,16 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 
 		//Verbindung zu MySQL aufbauen, Daten aus Config auslesen
-		connection = new SQL_Connection(new PropertieLoader().getConnectionInfo());
+//		connection = new SQL_Connection(new PropertieLoader().getConnectionInfo());
 		sqlConnected = true;
 		mess = Messages.getInstance();
 
 		if (sqlConnected) {
 			//Registrieren der Listener
 			getServer().getPluginManager().registerEvents(new SignChangeListener(), this);
-			getServer().getPluginManager().registerEvents(new BlockBreakListener(connection), this);
-			getServer().getPluginManager().registerEvents(new PlayerJoinListener(connection), this);
-			getServer().getPluginManager().registerEvents(new SignClickListener(connection), this);
+			getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
+			getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+			getServer().getPluginManager().registerEvents(new SignClickListener(), this);
 			this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
 				public void run() {
 					getAbgelaufene();
@@ -48,7 +48,7 @@ public class Main extends JavaPlugin {
 
 	public void getAbgelaufene() {
 
-		int x = connection.getActiveAbgelaufeneSigns();
+		int x = SQLHandler.getInstance().abgelaufen.size();
 		if (x > 0) {
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				if (p.hasPermission("signs.smod")) {
@@ -66,7 +66,7 @@ public class Main extends JavaPlugin {
 	public void onDisable() {
 		if (sqlConnected) {
 			getServer().getScheduler().cancelTasks(this);
-			connection.disable();
+			SQLHandler.getInstance().closeConnection();
 		}
 		mess.toConsole("Plugin gestoppt");
 	}

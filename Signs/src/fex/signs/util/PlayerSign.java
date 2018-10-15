@@ -11,9 +11,10 @@ public class PlayerSign {
 	private String type;
 	private String erstellerUUID;
 	private java.sql.Date maxExpandDate;
+	private String text;
 	
 	public PlayerSign(int ID, String besitzerUUID, Date ablaufDatum, int active, String location, String type,
-			String erstellerUUID, Date maxExpandDate) {
+			String erstellerUUID, Date maxExpandDate, String text) {
 		this.ID = ID;
 		this.besitzerUUID = besitzerUUID;
 		this.ablaufDatum = ablaufDatum;
@@ -22,6 +23,7 @@ public class PlayerSign {
 		this.type = type;
 		this.erstellerUUID = erstellerUUID;
 		this.maxExpandDate = maxExpandDate;
+		this.text = text;
 	}
 
 	public int getID() {
@@ -54,7 +56,11 @@ public class PlayerSign {
 
 	public java.sql.Date getMaxExpandDate() {
 		return maxExpandDate;
-	};
+	}
+	
+	public String getText() {
+		return text;
+	}
 	
 	
 }

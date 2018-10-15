@@ -64,7 +64,7 @@ public class SQLHandler {
 		}
 
 	}
-	private void closeConnection() {
+	public void closeConnection() {
 		if(connection!= null) {
 			try {
 				connection.commit();

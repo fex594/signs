@@ -14,8 +14,9 @@ public class PSConverter {
 		String type = r.getString("Typ");
 		String erstellerUUID = r.getString("Ersteller");
 		java.sql.Date maxExpandDate = r.getDate("Lastdate");
+		String text = r.getString("Text");	
 		
-		PlayerSign ps = new PlayerSign(ID, besitzerUUID, ablaufDatum, active, location, type, erstellerUUID, maxExpandDate);
+		PlayerSign ps = new PlayerSign(ID, besitzerUUID, ablaufDatum, active, location, type, erstellerUUID, maxExpandDate, text);
 		return ps;
 		
 		}catch(SQLException e) {

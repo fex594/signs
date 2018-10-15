@@ -93,7 +93,7 @@ public class SignChangeListener extends MyListener implements Listener {
 									+ e.getBlock().getLocation().getBlockY() + "/"
 									+ e.getBlock().getLocation().getBlockZ() + ")";
 							e.setLine(0, "§4" + localtype);
-							e.setLine(1, "§2#" + sql.putNewSign(p2.getUniqueId().toString(), date, 1, loc, localtype,
+							e.setLine(1, "§2#" + _sql.putNewSign(p2.getUniqueId().toString(), date, 1, loc, localtype,
 									e.getPlayer().getUniqueId().toString(), lastDate));
 							e.setLine(2, "§6" + p2.getName());
 							e.setLine(3, "§[Klick mich]");
