@@ -8,7 +8,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
 
 import fex.signs.util.Messages;
-import fex.signs.signs.SQL_Connection;
 
 public class BlockBreakListener extends MyListener implements Listener {
 
@@ -30,8 +29,11 @@ public class BlockBreakListener extends MyListener implements Listener {
 			if (line.equalsIgnoreCase("§4[Bauregeln]") || line.equalsIgnoreCase("§4[Abriss]")
 					|| line.equalsIgnoreCase("§4[Verschönern]") || line.equalsIgnoreCase("§4[Weiterbauen]")) {
 				if (e.getPlayer().hasPermission("signs.support")) {
-					sql.setInaktivSign(Integer.parseInt(s.getLine(1).replace("§2#", "")));
-					mess.toPlayer(e.getPlayer(), "Schild erfolgreich entfernt");
+					
+					//Fehlerhaft
+				//	sql.setInaktivSign(Integer.parseInt(s.getLine(1).replace("§2#", "")));
+					
+					mess.toPlayer(e.getPlayer(), "Schild erfolgreich NICHT!!!!! entfernt");
 				} else {
 					mess.toPlayer(e.getPlayer(), "Keine Berechtigung, das Schild zu entfernen", Messages.IMPORTANT);
 					e.setCancelled(true);
