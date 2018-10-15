@@ -15,17 +15,13 @@ import com.mysql.jdbc.Connection;
 import fex.signs.util.ConnectionInfo;
 import fex.signs.util.PlayerSign;
 
-@SuppressWarnings("unused")
 public class SQLHandler {
 	private static SQLHandler instance;
-	private Connection connection;
-	private ConnectionInfo ci;
-
-	
-	//Test
-	// Unused
+	private Connection connection;				//Datenbankverbindung
+	private ConnectionInfo ci;					//Logininfos für DB
+	public List<PlayerSign> active;				//Liste der aktiven Schilder
+	public List<PlayerSign> abgelaufen;			//Liste der abgelaufenen Schilder
 	private static int highID;
-	private Set<PlayerSign> activeSigns;
 
 	/**
 	 * Deaktiviert den Standartkonstruktor
@@ -141,5 +137,34 @@ public class SQLHandler {
 		} catch (SQLException e) {
 			return null;
 		}
+	}
+	
+	public int getMaxID() {
+		String sts = "SELECT MAX(ID) AS Maximum FROM Schilder";
+		try {
+			Statement stm = connection.createStatement();
+			ResultSet set = stm.executeQuery(sts);
+			return set.getInt("Maximum");
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+	
+	public void update() {
+		this.openConnection();						//Datenbankverbindung öffnen
+				
+		ResultSt result = getActiveSigns();			//Aktive Schilder sortieren und einordnen
+		this.active = new ArrayList<PlayerSign>();
+		while(result.next()) {
+			PlayerSign ps = new PlayerSign(result.getInt("ID"))		//Neue PlayerSign aus Daten de aktuellen Datenbankeintrags
+			active.add(ps);						
+			if(result.getDate("Datum")<=now()) {
+				this.abgelaufen.add(ps);
+				
+			}
+		}
+		this.highID = getMaxID();					//Maximums-ID aktualisieren
+		
+		this.closeConnection();						//Datenbankverbindung schließen
 	}
 }
