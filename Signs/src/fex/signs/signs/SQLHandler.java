@@ -13,6 +13,7 @@ import java.util.List;
 import com.mysql.jdbc.Connection;
 
 import fex.signs.util.ConnectionInfo;
+import fex.signs.util.PSConverter;
 import fex.signs.util.PlayerSign;
 
 public class SQLHandler {
@@ -113,14 +114,7 @@ public class SQLHandler {
 					+ lastDate + "')";
 			PreparedStatement sql = connection.prepareStatement(st);
 			sql.executeUpdate();
-			String sts = "SELECT MAX(ID) AS localid From Schilder";
-			Statement stm = connection.createStatement();
-			ResultSet set = stm.executeQuery(sts);
-			int count = 0;
-			while (set.next()) {
-				count = set.getInt("localid");
-			}
-			return count;
+			return ++maxID;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -156,7 +150,7 @@ public class SQLHandler {
 		ResultSet result = getActiveSigns();			//Aktive Schilder sortieren und einordnen
 		this.active = new ArrayList<PlayerSign>();
 		while(result.next()) {
-			PlayerSign ps = new PlayerSign();		//Neue PlayerSign aus Daten de aktuellen Datenbankeintrags
+			PlayerSign ps = PSConverter.convert(result);		//Neue PlayerSign aus Daten de aktuellen Datenbankeintrags
 			active.add(ps);						
 			if(result.getDate("Datum").before(now())) {	//now?
 				this.abgelaufen.add(ps);
