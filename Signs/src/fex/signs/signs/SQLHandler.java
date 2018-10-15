@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
 
 import com.mysql.jdbc.Connection;
 
@@ -21,7 +21,7 @@ public class SQLHandler {
 	private ConnectionInfo ci;					//Logininfos für DB
 	public List<PlayerSign> active;				//Liste der aktiven Schilder
 	public List<PlayerSign> abgelaufen;			//Liste der abgelaufenen Schilder
-	private static int highID;
+	private static int maxID;
 
 	/**
 	 * Deaktiviert den Standartkonstruktor
@@ -146,25 +146,30 @@ public class SQLHandler {
 			ResultSet set = stm.executeQuery(sts);
 			return set.getInt("Maximum");
 		} catch (SQLException e) {
-			return null;
+			return -1;
 		}
 	}
 	
-	public void update() {
+	public void update() throws SQLException {
 		this.openConnection();						//Datenbankverbindung öffnen
 				
-		ResultSt result = getActiveSigns();			//Aktive Schilder sortieren und einordnen
+		ResultSet result = getActiveSigns();			//Aktive Schilder sortieren und einordnen
 		this.active = new ArrayList<PlayerSign>();
 		while(result.next()) {
-			PlayerSign ps = new PlayerSign(result.getInt("ID"))		//Neue PlayerSign aus Daten de aktuellen Datenbankeintrags
+			PlayerSign ps = new PlayerSign();		//Neue PlayerSign aus Daten de aktuellen Datenbankeintrags
 			active.add(ps);						
-			if(result.getDate("Datum")<=now()) {
+			if(result.getDate("Datum").before(now())) {	//now?
 				this.abgelaufen.add(ps);
 				
 			}
 		}
-		this.highID = getMaxID();					//Maximums-ID aktualisieren
+		maxID = getMaxID();					//Maximums-ID aktualisieren
 		
 		this.closeConnection();						//Datenbankverbindung schließen
+	}
+	
+	public Date now() {
+		Calendar c = Calendar.getInstance();
+		return new Date(c.getTimeInMillis());
 	}
 }

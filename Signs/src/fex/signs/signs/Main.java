@@ -32,7 +32,7 @@ public class Main extends JavaPlugin {
 
 		if (sqlConnected) {
 			//Registrieren der Listener
-			getServer().getPluginManager().registerEvents(new SignChangeListener(connection), this);
+			getServer().getPluginManager().registerEvents(new SignChangeListener(), this);
 			getServer().getPluginManager().registerEvents(new BlockBreakListener(connection), this);
 			getServer().getPluginManager().registerEvents(new PlayerJoinListener(connection), this);
 			getServer().getPluginManager().registerEvents(new SignClickListener(connection), this);

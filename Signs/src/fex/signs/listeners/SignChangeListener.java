@@ -19,16 +19,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.util.Vector;
 
-import fex.signs.signs.SQL_Connection;
+//import fex.signs.signs.SQL_Connection;
 import fex.signs.util.Messages;
 
 public class SignChangeListener extends MyListener implements Listener {
 
 	private final int MAX_EXPAND_DAYS = 31;
 
-	public SignChangeListener(SQL_Connection connection) {
-		super(connection);
-	}
+//	public SignChangeListener(SQL_Connection connection) {
+//		super(connection);
+//	}
 
 	//Überarbeiten!!!
 	/**
@@ -84,10 +84,10 @@ public class SignChangeListener extends MyListener implements Listener {
 							}
 							Calendar c = Calendar.getInstance();
 							c.add(Calendar.DAY_OF_MONTH, intLong);
-							Date date = new Date(c.getTimeInMillis());
+							Date date = new Date(c.getTimeInMillis());				//Ablaufdatum
 							c = Calendar.getInstance();
 							c.add(Calendar.DAY_OF_MONTH, MAX_EXPAND_DAYS);
-							Date lastDate = new Date(c.getTimeInMillis());
+							Date lastDate = new Date(c.getTimeInMillis());			//Spätestes Ablaufdatum
 							String loc = "(" + e.getBlock().getLocation().getWorld().getName() + ":"
 									+ e.getBlock().getLocation().getBlockX() + "/"
 									+ e.getBlock().getLocation().getBlockY() + "/"
