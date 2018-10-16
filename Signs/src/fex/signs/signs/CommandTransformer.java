@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import fex.signs.util.Messages;
 import fex.signs.util.PlayerSign;
+import fex.signs.util.Util;
 
 public class CommandTransformer {
 
@@ -111,7 +112,7 @@ public class CommandTransformer {
 			// System.out.println(active.size());
 			this.abgelaufen = new ArrayList<PlayerSign>();
 			for (PlayerSign ps : active) // Update abgelaufene Schilder
-				if (ps.getAblaufDatum().before(SQLHandler.now())) {
+				if (ps.getAblaufDatum().before(Util.now())) {
 					this.abgelaufen.add(ps);
 				}
 

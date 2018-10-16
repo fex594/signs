@@ -1,0 +1,18 @@
++			getInfos(id, name)														
++			getActiveSigns(+Name)			-->Nicht mehr SQL
++			getAbgelaufeneSigns(+Name)		-->Nicht mehr SQL
++			putNew
++			getDate(id)						-->Nicht mehr SQL
++			getLoc(id)						-->Nicht mehr SQL
++			setDate(id)
++			setInaktiv(id)
+-			isInArea(id) 		-->Prüft, ob ID größer maxID ist (Nicht mehr über sql)
++			isActive						-->Nicht mehr SQl
+-			deleteSign(id)					--> unnötig?
++			comment(id,text)
+deleteAllActiveSigns(name)
+
+
+-->update() bei ändernden Befehlen
+ClickListener not working
+toString überarbeiten

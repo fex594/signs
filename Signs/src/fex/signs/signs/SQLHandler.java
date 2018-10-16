@@ -1,13 +1,11 @@
 package fex.signs.signs;
 
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import com.mysql.jdbc.Connection;
@@ -187,10 +185,5 @@ public class SQLHandler {
 		closeConnection();
 		
 		return success;
-	}
-
-	public static Date now() {
-		Calendar c = Calendar.getInstance();
-		return new Date(c.getTimeInMillis());
 	}
 }
