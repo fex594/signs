@@ -31,11 +31,20 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
 		getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 		getServer().getPluginManager().registerEvents(new SignClickListener(), this);
+		
+		//Zeitliches anzeigen der abgelaufenen Schilder
 		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
 			public void run() {
 				getAbgelaufene();
 			}
 		}, 20 * 20L, 20 * 600L);// 20*600L = 10 Minuten
+		
+		//Lokale Schilder Auto-Update
+		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
+			public void run() {
+				CommandTransformer.getInstance().update();
+			}
+		}, 20 * 20L, 20 * 60*60L);// 20*60*30L = 60 Minuten
 
 		mess.toConsole("Plugin gestartet");
 
