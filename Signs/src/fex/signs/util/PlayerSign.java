@@ -62,5 +62,10 @@ public class PlayerSign {
 		return text;
 	}
 	
+	@Override
+	public String toString() {
+		return "ID: "+ID+", BesitzerUUID: "+besitzerUUID+", Aktiv: "+active;
+	}
+	
 	
 }

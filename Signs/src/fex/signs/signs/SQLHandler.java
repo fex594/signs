@@ -13,16 +13,15 @@ import java.util.List;
 import com.mysql.jdbc.Connection;
 
 import fex.signs.util.ConnectionInfo;
+import fex.signs.util.NoSignFoundException;
 import fex.signs.util.PSConverter;
 import fex.signs.util.PlayerSign;
 
 public class SQLHandler {
 	private static SQLHandler instance;
-	private Connection connection;				//Datenbankverbindung
-	private ConnectionInfo ci;					//Logininfos für DB
-	public List<PlayerSign> active;				//Liste der aktiven Schilder
-	public List<PlayerSign> abgelaufen;			//Liste der abgelaufenen Schilder
-	private static int maxID;
+	private Connection connection; // Datenbankverbindung
+	private ConnectionInfo ci; // Logininfos für DB
+	private static int maxID; // Aktuelle Max-ID
 
 	/**
 	 * Deaktiviert den Standartkonstruktor
@@ -38,6 +37,7 @@ public class SQLHandler {
 
 	/**
 	 * Gibt eine Singleton-Instanz von SQLHandler zurück
+	 * 
 	 * @return Instanz von SQLHandler
 	 */
 	public static synchronized SQLHandler getInstance() {
@@ -64,12 +64,13 @@ public class SQLHandler {
 		}
 
 	}
+
 	public void closeConnection() {
-		if(connection!= null) {
+		if (connection != null) {
 			try {
-				connection.commit();
 				connection.close();
-			}catch(SQLException e) {
+				System.out.println("Verbindung geschlossen");
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
@@ -122,47 +123,71 @@ public class SQLHandler {
 		return -1;
 	}
 
-	public ResultSet getActiveSigns() {
+	// Liefert alle aktiven Schilder zurück
+	public List<PlayerSign> getActiveSigns() {
 		String sts = "SELECT *  FROM Schilder WHERE Active = 1";
 		try {
 			Statement stm = connection.createStatement();
 			ResultSet set = stm.executeQuery(sts);
-			return set;
+			ArrayList<PlayerSign> active = new ArrayList<>();
+			while (set.next()) {
+				PlayerSign ps = PSConverter.convert(set); // Neue PlayerSign aus Daten de aktuellen Datenbankeintrags
+				active.add(ps);
+			}
+			return active;
 		} catch (SQLException e) {
+			System.out.println("Fehler getActiveSigns");
 			return null;
 		}
 	}
 	
-	public int getMaxID() {
-		String sts = "SELECT MAX(ID) AS Maximum FROM Schilder";
+	public PlayerSign getSign(int ID) throws NoSignFoundException {
+		openConnection();
+		
+		String sts = "SELECT * FROM Schilder WHERE ID = "+ID;
+		PlayerSign ps = null;
 		try {
 			Statement stm = connection.createStatement();
 			ResultSet set = stm.executeQuery(sts);
-			return set.getInt("Maximum");
-		} catch (SQLException e) {
-			return -1;
-		}
-	}
-	
-	public void update() throws SQLException {
-		this.openConnection();						//Datenbankverbindung öffnen
-				
-		ResultSet result = getActiveSigns();			//Aktive Schilder sortieren und einordnen
-		this.active = new ArrayList<PlayerSign>();
-		while(result.next()) {
-			PlayerSign ps = PSConverter.convert(result);		//Neue PlayerSign aus Daten de aktuellen Datenbankeintrags
-			active.add(ps);						
-			if(result.getDate("Datum").before(now())) {	//now?
-				this.abgelaufen.add(ps);
-				
+			while(set.next()) {
+				ps = PSConverter.convert(set);
 			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw new NoSignFoundException();
 		}
-		maxID = getMaxID();					//Maximums-ID aktualisieren
-		
-		this.closeConnection();						//Datenbankverbindung schließen
+		return ps;
 	}
-	
-	public Date now() {
+
+	public int getMaxID() {
+		openConnection();
+
+		String sts = "SELECT MAX(ID) AS Maximum FROM Schilder";
+		int returned = -1;
+		try {
+			Statement stm = connection.createStatement();
+			ResultSet set = stm.executeQuery(sts);
+			while(set.next()) {
+			returned = set.getInt("Maximum");
+			}
+		} catch (SQLException e) {
+			System.out.println("Fehler getMaxID");
+			e.printStackTrace();
+		}
+		return returned;
+
+	}
+
+	public List<PlayerSign> update() throws SQLException {
+		openConnection(); // Datenbankverbindung öffnen
+
+		List<PlayerSign> result = getActiveSigns(); // Aktive Schilder sortieren und einordnen
+
+		closeConnection(); // Datenbankverbindung schließen
+		return result;
+	}
+
+	public static Date now() {
 		Calendar c = Calendar.getInstance();
 		return new Date(c.getTimeInMillis());
 	}
