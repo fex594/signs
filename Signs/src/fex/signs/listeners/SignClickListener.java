@@ -30,7 +30,7 @@ public class SignClickListener extends MyListener implements Listener {
 						|| b.getType() == Material.SIGN) {
 					Sign s = (Sign) b.getState();
 					String firstLine = s.getLine(0);
-					if (firstLine.equalsIgnoreCase("§4[Bauregeln]") || (firstLine.equalsIgnoreCase("�§[Verschönern]"))
+					if (firstLine.equalsIgnoreCase("§4[Bauregeln]") || (firstLine.equalsIgnoreCase("§4[Verschönern]"))
 							|| (firstLine.equalsIgnoreCase("§4[Abriss]"))
 							|| (firstLine.equalsIgnoreCase("§4[Weiterbauen]"))) {
 						for(PlayerSign ps: _sql.active) {
