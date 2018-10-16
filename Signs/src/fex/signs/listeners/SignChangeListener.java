@@ -97,7 +97,7 @@ public class SignChangeListener extends MyListener implements Listener {
 							e.setLine(1, "§2#" + CommandTransformer.getInstance().putNewSign(p2.getUniqueId().toString(), date, 1, loc, localtype,
 									e.getPlayer().getUniqueId().toString(), lastDate));
 							e.setLine(2, "§6" + p2.getName());
-							e.setLine(3, "§[Klick mich]");
+							e.setLine(3, "[Klick mich]");
 						} else {
 							mess.toPlayer(e.getPlayer(), "Spieler " + name + " war noch nie auf dem Server",
 									Messages.IMPORTANT);

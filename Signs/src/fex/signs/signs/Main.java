@@ -355,24 +355,24 @@ public class Main extends JavaPlugin {
 	}
 
 	private void hilfe(Player p) {
-		if (p.hasPermission("schilder.user")) {
+		if (p.hasPermission("signs.user")) {
 			mess.toPlayer(p, "§2--- §6Befehlsliste §2---");
 			mess.toPlayer(p, "/signs help §7- Zeigt die Befehlsliste an");
 			mess.toPlayer(p, "/signs info §a[id] §7- Gibt Infos über ein Schild");
-			if (p.hasPermission("schilder.support")) {
+			if (p.hasPermission("signs.support")) {
 				mess.toPlayer(p, "§2--- §6Support-Befehle §2---");
 				mess.toPlayer(p, "/signs getSign §7- Gibt ein Schild");
 				mess.toPlayer(p, "/signs listActive §a{Name}§7- Zeigt alle aktiven Schilder an");
 				mess.toPlayer(p, "/signs comment §a[id] [Text] §7- Kommentiert ein Schild");
 				mess.toPlayer(p, "/signs tp §a[id]§7 - Tpt zu dem Schild");
 				mess.toPlayer(p, "/signs signTypes§7 - Listet verfügbare Schilder auf");
-				if (p.hasPermission("schilder.smod")) {
+				if (p.hasPermission("signs.smod")) {
 					mess.toPlayer(p, "§2--- §6SMod-Befehle §2---");
 					mess.toPlayer(p,
 							"/signs expand §a[id] [Tage] §7- Verlängert ein Schild um x Tage (maximale Zeit: 30 Tage)");
 					mess.toPlayer(p, "/signs list §a{Name}§7- Zeigt alle abgelaufenen Schilder an");
 					mess.toPlayer(p, "/signs remove §a[id]§7 - Setzt ein Schild inaktiv (Falls nicht vorhanden)");
-					if (p.hasPermission("schilder.admin")) {
+					if (p.hasPermission("signs.admin")) {
 						mess.toPlayer(p, "§2--- §6Admin-Befehle §2---");
 						mess.toPlayer(p,
 								"/signs forceexpand §a[id] [zeit]§7 - Verlängert ein Schild um x Tage (Keine Begrenzung)");
@@ -385,7 +385,7 @@ public class Main extends JavaPlugin {
 	}
 
 	private void infos(Player p) {
-		if (p.hasPermission("schilder.user")) {
+		if (p.hasPermission("signs.user")) {
 			mess.toPlayer(p, "Informationen");
 			mess.toPlayer(p, "Version: §2" + version);
 			mess.toPlayer(p, "Author: §2fex594");

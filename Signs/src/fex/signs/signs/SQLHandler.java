@@ -155,7 +155,7 @@ public class SQLHandler {
 	public List<PlayerSign> sendResultStatements(String args) {
 		openConnection(); // Datenbankverbindung öffnen
 
-		List<PlayerSign> result = new ArrayList<>(); 
+		ArrayList<PlayerSign> result = new ArrayList<>(); 
 		try {
 			Statement stm = connection.createStatement();
 			ResultSet set = stm.executeQuery(args);
@@ -163,6 +163,7 @@ public class SQLHandler {
 				result.add(PSConverter.convert(set));
 			}}catch(SQLException e) {
 				Messages.getInstance().toConsole("Fehler beim Senden/Empfangen von Daten: "+args);
+				e.printStackTrace();
 			}
 
 		closeConnection(); // Datenbankverbindung schließen

@@ -84,7 +84,7 @@ public class CommandTransformer {
 				}
 			}
 			if (ps == null) {
-				ps = SQLHandler.getInstance().sendResultStatements("SELECT * FROM SCHILDER WHERE ID = " + ID).get(0);
+				ps = SQLHandler.getInstance().sendResultStatements("SELECT * FROM Schilder WHERE ID = " + ID).get(0);
 			}
 			mess.toPlayer(p, ps.toString(), Messages.NORMAL);
 		}
