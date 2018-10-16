@@ -77,281 +77,270 @@ public class Main extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
-			try {
-				if (cmd.getName().equalsIgnoreCase("signs")) {
-					if (args.length >= 1) {
-						if (args[0].equalsIgnoreCase("getSign")) {
-							if (p.hasPermission("signs.support")) {
-								ItemStack xSchild = new ItemStack(Material.SIGN);
-								ItemMeta meta = xSchild.getItemMeta();
-								meta.setDisplayName("§6Adminschild");
-								xSchild.setItemMeta(meta);
-								p.getInventory().addItem(xSchild);
-								mess.toPlayer(p, "Ein magisches Schild ist erschienen", Messages.NORMAL);
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("help")) {
-							if (p.hasPermission("signs.user")) {
-								hilfe(p);
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("list")) {
-							if (p.hasPermission("signs.smod")) {
-								if (args.length == 1) {
-									List<PlayerSign> list = CommandTransformer.getInstance().getAbgelaufen(null);
-									mess.toPlayer(p, "Abgelaufene Schilder:");
-									if (list.isEmpty()) {
-										mess.toPlayer(p, "Keine Schilder offen", Messages.NORMAL);
-									} else {
-										for (int z = 0; z < list.size(); z++) {
-											p.sendMessage("§6" + list.get(z));
-										}
-									}
+			// try {
+			if (cmd.getName().equalsIgnoreCase("signs")) {
+				if (args.length >= 1) {
+					if (args[0].equalsIgnoreCase("getSign")) {
+						if (p.hasPermission("signs.support")) {
+							ItemStack xSchild = new ItemStack(Material.SIGN);
+							ItemMeta meta = xSchild.getItemMeta();
+							meta.setDisplayName("§6Adminschild");
+							xSchild.setItemMeta(meta);
+							p.getInventory().addItem(xSchild);
+							mess.toPlayer(p, "Ein magisches Schild ist erschienen", Messages.NORMAL);
+						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("help")) {
+						if (p.hasPermission("signs.user")) {
+							hilfe(p);
+						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("list")) {
+						if (p.hasPermission("signs.smod")) {
+							if (args.length == 1) {
+								List<PlayerSign> list = CommandTransformer.getInstance().getAbgelaufen(null);
+								mess.toPlayer(p, "Abgelaufene Schilder:");
+								if (list.isEmpty()) {
+									mess.toPlayer(p, "Keine Schilder offen", Messages.NORMAL);
 								} else {
-									List<PlayerSign> list = CommandTransformer.getInstance()
-											.getAbgelaufen(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
-									mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
-									if (list.isEmpty()) {
-										mess.toPlayer(p, "Keine abgelaufenen Schilder");
-									} else {
-										for (int z = 0; z < list.size(); z++) {
-											mess.toPlayer(p, list.get(z).toString());
-										}
+									for (int z = 0; z < list.size(); z++) {
+										p.sendMessage("§6" + list.get(z));
 									}
 								}
 							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("listActive")) {
-							if (p.hasPermission("signs.support")) {
-								if (args.length == 1) {
-									mess.toPlayer(p, "Aktive Schilder: ");
-									List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
-									if (list.isEmpty()) {
-										mess.toPlayer(p, "Keine Schilder offen", Messages.NORMAL);
-									} else {
-										for (int z = 0; z < list.size(); z++) {
-											p.sendMessage("§6" + list.get(z));
-										}
-									}
+								List<PlayerSign> list = CommandTransformer.getInstance()
+										.getAbgelaufen(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
+								mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
+								if (list.isEmpty()) {
+									mess.toPlayer(p, "Keine abgelaufenen Schilder");
 								} else {
-									mess.toPlayer(p, "Aktive Schilder von " + args[1]);
-									List<PlayerSign> list = CommandTransformer.getInstance().getActive(
-											Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
-									if (list.isEmpty()) {
-										mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine offenen Schilder");
-									} else {
-										for (int z = 0; z < list.size(); z++) {
-											mess.toPlayer(p, list.get(z).toString());
-										}
+									for (int z = 0; z < list.size(); z++) {
+										mess.toPlayer(p, list.get(z).toString());
 									}
 								}
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("info")) {
-							if (p.hasPermission("signs.user")) {
-								if (args.length == 1) {
-									mess.toPlayer(p, "Gebe eine ID an", Messages.IMPORTANT);
-								} else {
-									try {
-										int id = Integer.parseInt(args[1]);
-										CommandTransformer.getInstance().getInfo(id, p);
-									} catch (NumberFormatException e) {
-										mess.toPlayer(p, args[1] + " ist keine Zahl!", Messages.IMPORTANT);
-									}
-								}
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("comment")) {
-							if (p.hasPermission("signs.support")) {
-								if (args.length == 1) {
-									mess.toPlayer(p, "Gebe einen Text ein", Messages.IMPORTANT);
-								} else {
-									String s = "";
-									for (int z = 2; z < args.length - 1; z++) {
-										s = s + args[z] + " ";
-									}
-									s = s + args[args.length - 1];
-									if (CommandTransformer.getInstance().commentSign(Integer.parseInt(args[1]), s)) {
-										mess.toPlayer(p, "Schild erfolgreich aktualisiert", Messages.NORMAL);
-									} else {
-										mess.toPlayer(p, "Fehler beim Aktualisieren des Schildes", Messages.IMPORTANT);
-									}
-								}
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("remove")) {
-							if (p.hasPermission("signs.smod")) {
-								if (args.length == 1) {
-									mess.toPlayer(p, "Missing ID");
-								} else {
-									try {
-										int id = Integer.parseInt(args[1]);
-										boolean state1 = CommandTransformer.getInstance().isActive(id);
-										boolean state2 = (id <= CommandTransformer.getInstance().getMaxID());
-										if (state1 && state2) {
-											CommandTransformer.getInstance().setInaktiv(id);
-											mess.toPlayer(p, "Schild deaktiviert");
-										} else if (!state2) {
-											mess.toPlayer(p, "Das Schild existiert nicht", Messages.IMPORTANT);
-										} else if (!state1) {
-											mess.toPlayer(p, "Das Schild ist nicht aktiv", Messages.IMPORTANT);
-										}
-									} catch (NumberFormatException e) {
-										mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
-									}
-								}
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("tp")) {
-							if (p.hasPermission("signs.support")) {
-								if (args.length == 1) {
-									mess.toPlayer(p, "Missing ID");
-								} else {
-									try {
-										String location = CommandTransformer.getInstance()
-												.getLocation(Integer.parseInt(args[1]));
-										if (location == null) {
-											mess.toPlayer(p, "Schild existiert nicht mehr", Messages.IMPORTANT);
-										} else {
-											location = location.replace("(", "").replace(")", "");
-											String world = location.substring(0, location.indexOf(":")).replace(":",
-													"");
-											double erster = Integer.parseInt(
-													location.substring(location.indexOf(":"), location.indexOf("/"))
-															.replace(":", "").replace("/", ""))
-													+ 0.5;
-											double zweiter = Integer.parseInt(
-													location.substring(location.indexOf("/"), location.lastIndexOf("/"))
-															.replace("/", ""));
-											double dritter = Integer.parseInt(
-													location.substring(location.lastIndexOf("/")).replace("/", ""))
-													+ 0.5;
-											Location l = new Location(Bukkit.getServer().getWorld(world), erster,
-													zweiter, dritter);
-											p.teleport(l);
-										}
-									} catch (NumberFormatException e) {
-										mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
-									} catch (StringIndexOutOfBoundsException ex) {
-										mess.toPlayer(p, "Kein Schild gefunden", Messages.IMPORTANT);
-									}
-
-								}
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("faq")) {
-							if (p.hasPermission("signs.user")) {
-								infos(p);
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("expand")) {
-							if (p.hasPermission("signs.smod")) {
-								if (args.length <= 2) {
-									mess.toPlayer(p, "Missing Arguments", Messages.IMPORTANT);
-								} else {
-									try {
-										int id = Integer.parseInt(args[1]);
-										int days = Integer.parseInt(args[2]);
-										mess.toPlayer(p, CommandTransformer.getInstance().setDate(id, days, false));
-									} catch (NumberFormatException e) {
-										mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
-									}
-								}
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("forceexpand")) {
-							if (p.hasPermission("signs.admin")) {
-								if (args.length <= 2) {
-									mess.toPlayer(p, "Missing Arguments", Messages.IMPORTANT);
-								} else {
-									try {
-										int id = Integer.parseInt(args[1]);
-										int days = Integer.parseInt(args[2]);
-										mess.toPlayer(p, CommandTransformer.getInstance().setDate(id, days, true));
-									} catch (NumberFormatException e) {
-										mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
-									}
-								}
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("removeall")) {
-							if (p.hasPermission("signs.admin")) {
-								if (args.length <= 1) {
-									mess.toPlayer(p, "Gebe einen Namen ein!", Messages.IMPORTANT);
-								} else {
-									String uuid = Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString();
-									try {
-										List<String> liste = CommandTransformer.getInstance().deleteAllSigns(uuid);
-										for (int count = 0; count < liste.size(); count++) {
-											String location = liste.get(count);
-											try {
-												location = location.replace("(", "").replace(")", "");
-												String world = location.substring(0, location.indexOf(":")).replace(":",
-														"");
-												double erster = Integer.parseInt(
-														location.substring(location.indexOf(":"), location.indexOf("/"))
-																.replace(":", "").replace("/", ""));
-												double zweiter = Integer.parseInt(location
-														.substring(location.indexOf("/"), location.lastIndexOf("/"))
-														.replace("/", ""));
-												double dritter = Integer.parseInt(
-														location.substring(location.lastIndexOf("/")).replace("/", ""));
-												Location l = new Location(Bukkit.getServer().getWorld(world), erster,
-														zweiter, dritter);
-												if (Util.isSign(l)) {
-													l.getBlock().setType(Material.AIR);
-												}
-											} catch (NumberFormatException e) {
-												mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
-											} catch (StringIndexOutOfBoundsException ex) {
-												mess.toPlayer(p, "Kein Schild gefunden", Messages.IMPORTANT);
-											}
-										}
-										mess.toPlayer(p, "Alle Schilder von §2" + args[1]
-												+ "§6 wurden §2erfolgreich §6entfernt!");
-									} catch (Exception e) {
-										mess.toPlayer(p, "Fehler beim Ausführen des Befehls", Messages.ERROR);
-										e.printStackTrace();
-									}
-								}
-							} else {
-								noPermission(p);
-							}
-						} else if (args[0].equalsIgnoreCase("signTypes")) {
-							if (p.hasPermission("signs.support")) {
-								mess.toPlayer(p,
-										"Verfügbare Schilder: §2[Bauregeln], [Verschönern], [Abriss], [Weiterbauen]");
-							} else {
-								noPermission(p);
 							}
 						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("listActive")) {
+						if (p.hasPermission("signs.support")) {
+							if (args.length == 1) {
+								mess.toPlayer(p, "Aktive Schilder: ");
+								List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
+								if (list.isEmpty()) {
+									mess.toPlayer(p, "Keine Schilder offen", Messages.NORMAL);
+								} else {
+									for (int z = 0; z < list.size(); z++) {
+										p.sendMessage("§6" + list.get(z));
+									}
+								}
+							} else {
+								mess.toPlayer(p, "Aktive Schilder von " + args[1]);
+								List<PlayerSign> list = CommandTransformer.getInstance().getActive(
+										Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
+								if (list.isEmpty()) {
+									mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine offenen Schilder");
+								} else {
+									for (int z = 0; z < list.size(); z++) {
+										mess.toPlayer(p, list.get(z).toString());
+									}
+								}
+							}
+						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("info")) {
+						if (p.hasPermission("signs.user")) {
+							if (args.length == 1) {
+								mess.toPlayer(p, "Gebe eine ID an", Messages.IMPORTANT);
+							} else {
+								try {
+									int id = Integer.parseInt(args[1]);
+									CommandTransformer.getInstance().getInfo(id, p);
+								} catch (NumberFormatException e) {
+									mess.toPlayer(p, args[1] + " ist keine Zahl!", Messages.IMPORTANT);
+								}
+							}
+						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("comment")) {
+						if (p.hasPermission("signs.support")) {
+							if (args.length == 1) {
+								mess.toPlayer(p, "Gebe einen Text ein", Messages.IMPORTANT);
+							} else {
+								String s = "";
+								for (int z = 2; z < args.length - 1; z++) {
+									s = s + args[z] + " ";
+								}
+								s = s + args[args.length - 1];
+								if (CommandTransformer.getInstance().commentSign(Integer.parseInt(args[1]), s)) {
+									mess.toPlayer(p, "Schild erfolgreich aktualisiert", Messages.NORMAL);
+								} else {
+									mess.toPlayer(p, "Fehler beim Aktualisieren des Schildes", Messages.IMPORTANT);
+								}
+							}
+						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("remove")) {
+						if (p.hasPermission("signs.smod")) {
+							if (args.length == 1) {
+								mess.toPlayer(p, "Missing ID");
+							} else {
+								try {
+									int id = Integer.parseInt(args[1]);
+									boolean state1 = CommandTransformer.getInstance().isActive(id);
+									boolean state2 = (id <= CommandTransformer.getInstance().getMaxID());
+									if (state1 && state2) {
+										CommandTransformer.getInstance().setInaktiv(id);
+										mess.toPlayer(p, "Schild deaktiviert");
+									} else if (!state2) {
+										mess.toPlayer(p, "Das Schild existiert nicht", Messages.IMPORTANT);
+									} else if (!state1) {
+										mess.toPlayer(p, "Das Schild ist nicht aktiv", Messages.IMPORTANT);
+									}
+								} catch (NumberFormatException e) {
+									mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
+								}
+							}
+						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("tp")) {
+						if (p.hasPermission("signs.support")) {
+							if (args.length == 1) {
+								mess.toPlayer(p, "Missing ID");
+							} else {
+								try {
+									String location = CommandTransformer.getInstance()
+											.getLocation(Integer.parseInt(args[1]));
+									if (location == null) {
+										mess.toPlayer(p, "Schild existiert nicht mehr", Messages.IMPORTANT);
+									} else {
+										location = location.replace("(", "").replace(")", "");
+										String world = location.substring(0, location.indexOf(":")).replace(":", "");
+										double erster = Integer.parseInt(
+												location.substring(location.indexOf(":"), location.indexOf("/"))
+														.replace(":", "").replace("/", ""))
+												+ 0.5;
+										double zweiter = Integer.parseInt(
+												location.substring(location.indexOf("/"), location.lastIndexOf("/"))
+														.replace("/", ""));
+										double dritter = Integer.parseInt(
+												location.substring(location.lastIndexOf("/")).replace("/", "")) + 0.5;
+										Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter,
+												dritter);
+										p.teleport(l);
+									}
+								} catch (NumberFormatException e) {
+									mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
+								} catch (StringIndexOutOfBoundsException ex) {
+									mess.toPlayer(p, "Kein Schild gefunden", Messages.IMPORTANT);
+								}
 
-							mess.toPlayer(p, "Unbekannter Sub-Befehl", Messages.IMPORTANT);
+							}
+						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("faq")) {
+						if (p.hasPermission("signs.user")) {
+							infos(p);
+						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("expand")) {
+						if (p.hasPermission("signs.smod")) {
+							if (args.length <= 2) {
+								mess.toPlayer(p, "Missing Arguments", Messages.IMPORTANT);
+							} else {
+								try {
+									int id = Integer.parseInt(args[1]);
+									int days = Integer.parseInt(args[2]);
+									mess.toPlayer(p, CommandTransformer.getInstance().setDate(id, days, false));
+								} catch (NumberFormatException e) {
+									mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
+								}
+							}
+						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("forceexpand")) {
+						if (p.hasPermission("signs.admin")) {
+							if (args.length <= 2) {
+								mess.toPlayer(p, "Missing Arguments", Messages.IMPORTANT);
+							} else {
+								try {
+									int id = Integer.parseInt(args[1]);
+									int days = Integer.parseInt(args[2]);
+									mess.toPlayer(p, CommandTransformer.getInstance().setDate(id, days, true));
+								} catch (NumberFormatException e) {
+									mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
+								}
+							}
+						} else {
+							noPermission(p);
+						}
+					} else if (args[0].equalsIgnoreCase("signTypes")) {
+						if (p.hasPermission("signs.support")) {
+							mess.toPlayer(p,
+									"Verfügbare Schilder: §2[Bauregeln], [Verschönern], [Abriss], [Weiterbauen]");
+						} else {
+							noPermission(p);
 						}
 					} else {
-						hilfe(p);
-					}
 
-					return true;
+						mess.toPlayer(p, "Unbekannter Sub-Befehl", Messages.IMPORTANT);
+					}
 				} else {
-					return false;
+					hilfe(p);
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				mess.toPlayer(p, "Ein Fehler ist aufgetreten!", Messages.ERROR);
+
+				return true;
+			} else {
+				return false;
 			}
-		} else {
+		} else if (args[0].equalsIgnoreCase("removeall")) {
+			if (args.length <= 1) {
+				mess.toConsole("Gebe einen Namen ein!");
+			} else {
+				String uuid = Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString();
+				try {
+					List<String> liste = CommandTransformer.getInstance().deleteAllSigns(uuid);
+					for (int count = 0; count < liste.size(); count++) {
+						String location = liste.get(count);
+						try {
+							location = location.replace("(", "").replace(")", "");
+							String world = location.substring(0, location.indexOf(":")).replace(":", "");
+							double erster = Integer
+									.parseInt(location.substring(location.indexOf(":"), location.indexOf("/"))
+											.replace(":", "").replace("/", ""));
+							double zweiter = Integer.parseInt(location
+									.substring(location.indexOf("/"), location.lastIndexOf("/")).replace("/", ""));
+							double dritter = Integer
+									.parseInt(location.substring(location.lastIndexOf("/")).replace("/", ""));
+							Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter, dritter);
+							if (Util.isSign(l)) {
+								l.getBlock().setType(Material.AIR);
+							}
+						} catch (NumberFormatException e) {
+							mess.toConsole("Keine Zahl");
+						} catch (StringIndexOutOfBoundsException ex) {
+							mess.toConsole("Kein Schild gefunden");
+						}
+					}
+					mess.toConsole("Alle Schilder von §2" + args[1] + "§6 wurden §2erfolgreich §6entfernt!");
+				} catch (Exception e) {
+					mess.toConsole("Fehler beim Ausführen des Befehls");
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		else {
 			mess.toConsole("Dieser Befehl ist nur als Spieler ausführbar");
 		}
 		return true;
@@ -383,6 +372,7 @@ public class Main extends JavaPlugin {
 						mess.toPlayer(p, "§2--- §6Admin-Befehle §2---");
 						mess.toPlayer(p,
 								"/signs forceexpand §a[id] [zeit]§7 - Verlängert ein Schild um x Tage (Keine Begrenzung)");
+						mess.toPlayer(p, "§2--- §6Konsolen-Befehle §2---");
 						mess.toPlayer(p,
 								"/signs removeall §a[Spieler]§7 - Setzt alle aktiven Schilder eines Spielers inaktiv und entfernt die Schilder");
 					}
