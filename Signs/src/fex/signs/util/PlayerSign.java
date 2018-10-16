@@ -78,15 +78,15 @@ public class PlayerSign {
 		} else if (active == 1) {
 			s += "§2";
 		}
-		s += "[" + type + " #" + ID + "]§6 Besitzer: §2" + Util.UUIDtoPlayer(besitzerUUID) + " §6Ersteller: §2"
-				+ Util.UUIDtoPlayer(erstellerUUID) + " §6Ablaufdatum: §2" + date + " §6Ort: §2" + location;
+		s += "[" + type + " #" + ID + "]§6 Besitzer: §7" + Util.UUIDtoPlayer(besitzerUUID) + " §6Ersteller: §7"
+				+ Util.UUIDtoPlayer(erstellerUUID) +"\n"+ "§6Ablaufdatum: §7" + date + " §6Ort: §7" + location;
 		if (text!=null)
-			s += " §3{" + text + "}";
+			s += "\n§3{" + text + "}";
 		return s;
 	}
 	
 	public String toUserString() {
-		return "§2["+type+"] §6Eigentümer: §2"+Util.UUIDtoPlayer(besitzerUUID);
+		return "§7["+type+"] §6Eigentümer: §7"+Util.UUIDtoPlayer(besitzerUUID);
 	}
 
 }
