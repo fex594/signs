@@ -1,6 +1,8 @@
 package fex.signs.util;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class PlayerSign {
 	private int ID;
@@ -12,7 +14,7 @@ public class PlayerSign {
 	private String erstellerUUID;
 	private java.sql.Date maxExpandDate;
 	private String text;
-	
+
 	public PlayerSign(int ID, String besitzerUUID, Date ablaufDatum, int active, String location, String type,
 			String erstellerUUID, Date maxExpandDate, String text) {
 		this.ID = ID;
@@ -29,7 +31,7 @@ public class PlayerSign {
 	public int getID() {
 		return ID;
 	}
-	
+
 	public void setAblaufDatum(Date d) {
 		this.ablaufDatum = d;
 	}
@@ -61,15 +63,30 @@ public class PlayerSign {
 	public java.sql.Date getMaxExpandDate() {
 		return maxExpandDate;
 	}
-	
+
 	public String getText() {
 		return text;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "ID: "+ID+", BesitzerUUID: "+besitzerUUID+", Aktiv: "+active;
+		DateFormat df = new SimpleDateFormat("dd.MM.YYYY");
+		String date = df.format(getAblaufDatum()).toString();
+		String s = "";
+		if (active == 0) {
+			s += "§c";
+		} else if (active == 1) {
+			s += "§2";
+		}
+		s += "[" + type + " #" + ID + "]§6 Besitzer: §2" + Util.UUIDtoPlayer(besitzerUUID) + " §6Ersteller: §2"
+				+ Util.UUIDtoPlayer(erstellerUUID) + " §6Ablaufdatum: §2" + date + " §6Ort: §2" + location;
+		if (text!=null)
+			s += " §3{" + text + "}";
+		return s;
 	}
 	
-	
+	public String toUserString() {
+		return "§2["+type+"] §6Eigentümer: §2"+Util.UUIDtoPlayer(besitzerUUID);
+	}
+
 }

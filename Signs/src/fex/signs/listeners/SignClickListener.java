@@ -1,10 +1,5 @@
 package fex.signs.listeners;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -15,7 +10,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import fex.signs.signs.CommandTransformer;
 import fex.signs.util.PlayerSign;
-import fex.signs.util.Util;
 
 public class SignClickListener extends MyListener implements Listener {
 
@@ -37,25 +31,9 @@ public class SignClickListener extends MyListener implements Listener {
 							if(ps.getID()== ID){
 								String out = "";
 								if(ps.getBesitzerUUID().equals(e.getPlayer().getUniqueId().toString()) || e.getPlayer().hasPermission("signs.support")) {
-										int act = ps.getActive();
-										String active = "";
-										if (act == 1) {
-											DateFormat df = new SimpleDateFormat("dd.MM.YYYY");
-											String date = df.format(ps.getAblaufDatum()).toString();
-											active = "läuft am §2" + date + "§6 ab";
-										} else {
-											active = "ist §cinaktiv";
-										}
-										String pName = Util.UUIDtoPlayer(ps.getBesitzerUUID());
-										String erName = Util.UUIDtoPlayer(ps.getErstellerUUID());
-										out = "§6Ein §2" + ps.getType() + "§6-Schild für §2" + pName + "§6 mit der ID §2"
-												+ ID + "§6 " + active + "§6. Ersteller: §2" + erName;
-										if (!(ps.getText() == null)) {
-											out = out + " §6(Grund: §c" + ps.getText() + "§6)";
-										}
+										out = ps.toString();
 									} else {
-										String pName = Bukkit.getOfflinePlayer(UUID.fromString(ps.getErstellerUUID())).getName();
-										out = "Typ: §2" + ps.getType() + "§6, Spieler: " + pName;
+										out = ps.toUserString();
 									}
 								mess.toPlayer(e.getPlayer(), out);
 							}

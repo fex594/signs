@@ -341,6 +341,7 @@ public class Main extends JavaPlugin {
 					return false;
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				mess.toPlayer(p, "Ein Fehler ist aufgetreten!", Messages.ERROR);
 			}
 		} else {
