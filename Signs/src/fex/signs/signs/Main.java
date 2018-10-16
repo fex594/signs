@@ -1,5 +1,6 @@
 package fex.signs.signs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -132,11 +133,26 @@ public class Main extends JavaPlugin {
 								if (list.isEmpty()) {
 									mess.toPlayer(p, "Keine Schilder offen", Messages.NORMAL);
 								} else {
-									for (int z = 0; z < list.size(); z++) {
-										p.sendMessage("§6" + list.get(z));
+									ArrayList<String> mastered = new ArrayList<>();
+									for(PlayerSign ps : list) {
+										mastered.add(ps.toString());
 									}
+									mess.toPlayerStaged(p, mastered, 1,"/signs listactive -");
+//									for (int z = 0; z < list.size(); z++) {
+//										p.sendMessage("§6" + list.get(z));
+//									}
 								}
-							} else {
+							} else if(args.length == 2){
+								if(args[1].startsWith("-")) {
+									mess.toPlayer(p, "Aktive Schilder");
+									List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
+									ArrayList<String> mastered = new ArrayList<>();
+									for(PlayerSign ps : list) {
+										mastered.add(ps.toString());
+									}
+									mess.toPlayerStaged(p, mastered, Integer.parseInt(args[1].replace("-", "")),"/signs listActive -");
+								}
+								else {
 								mess.toPlayer(p, "Aktive Schilder von " + args[1]);
 								List<PlayerSign> list = CommandTransformer.getInstance().getActive(
 										Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
@@ -146,6 +162,17 @@ public class Main extends JavaPlugin {
 									for (int z = 0; z < list.size(); z++) {
 										mess.toPlayer(p, list.get(z).toString());
 									}
+								}}
+							}
+							else if(args.length==3) {
+								if(args[2].startsWith("-")) {
+									List<PlayerSign> list = CommandTransformer.getInstance().getActive(
+											Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
+									ArrayList<String> mastered = new ArrayList<>();
+									for(PlayerSign ps : list) {
+										mastered.add(ps.toString());
+									}
+									mess.toPlayerStaged(p, mastered, Integer.parseInt(args[2].replace("-", "")),"/signs listactive -");
 								}
 							}
 						} else {

@@ -72,13 +72,13 @@ public class PlayerSign {
 	public String toString() {
 		DateFormat df = new SimpleDateFormat("dd.MM.YYYY");
 		String date = df.format(getAblaufDatum()).toString();
-		String s = "";
+		String s = "§7[" + type ;
 		if (active == 0) {
 			s += "§c";
 		} else if (active == 1) {
 			s += "§2";
 		}
-		s += "[" + type + " #" + ID + "]§6 Besitzer: §7" + Util.UUIDtoPlayer(besitzerUUID) + " §6Ersteller: §7"
+		s +=  " #" + ID +"§7 ]§6 Besitzer: §7" + Util.UUIDtoPlayer(besitzerUUID) + " §6Ersteller: §7"
 				+ Util.UUIDtoPlayer(erstellerUUID) +"\n"+ "§6Ablaufdatum: §7" + date + " §6Ort: §7" + location;
 		if (text!=null)
 			s += "\n§3{" + text + "}";
