@@ -24,10 +24,7 @@ public class SignClickListener extends MyListener implements Listener {
 	public void onSignClick(PlayerInteractEvent e) {
 		if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (e.getPlayer().hasPermission("signs.user")) {
-				Block b = e.getClickedBlock();
-//	
-				System.out.println(b.getType().toString());
-//				
+				Block b = e.getClickedBlock();	
 				if (b.getType() == Material.WALL_SIGN
 						|| b.getType() == Material.SIGN) {
 					Sign s = (Sign) b.getState();
