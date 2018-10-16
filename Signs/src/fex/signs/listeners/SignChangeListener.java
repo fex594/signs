@@ -163,7 +163,11 @@ public class SignChangeListener extends MyListener implements Listener {
 				Material.PURPLE_CONCRETE_POWDER, Material.RED_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER,
 				Material.YELLOW_CONCRETE_POWDER, Material.AIR, Material.BLUE_ICE, Material.CACTUS,
 				Material.ACACIA_LEAVES, Material.BIRCH_LEAVES, Material.SPRUCE_LEAVES, Material.OAK_LEAVES,
-				Material.DARK_OAK_LEAVES, Material.JUNGLE_LEAVES });
+				Material.DARK_OAK_LEAVES, Material.JUNGLE_LEAVES, Material.ACACIA_PRESSURE_PLATE,
+				Material.BIRCH_PRESSURE_PLATE, Material.DARK_OAK_PRESSURE_PLATE, Material.JUNGLE_PRESSURE_PLATE,
+				Material.OAK_PRESSURE_PLATE, Material.SPRUCE_PRESSURE_PLATE, Material.HEAVY_WEIGHTED_PRESSURE_PLATE,
+				Material.LIGHT_WEIGHTED_PRESSURE_PLATE, Material.STONE_PRESSURE_PLATE, Material.CHORUS_FRUIT,
+				Material.CHORUS_FLOWER, Material.CHORUS_PLANT });
 		if (blockedList.contains(m))
 			return false;
 		else
