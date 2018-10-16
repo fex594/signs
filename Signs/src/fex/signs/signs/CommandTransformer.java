@@ -224,14 +224,20 @@ public class CommandTransformer {
 	 */
 	public List<String> deleteAllSigns(String s) {
 		List<String> list = new ArrayList<String>();
-		for(PlayerSign ps : active) {
-			if(ps.getBesitzerUUID().equals(s)) {
+		List<PlayerSign> delete = new ArrayList<PlayerSign>();
+		for (PlayerSign ps : active) {
+			if (ps.getBesitzerUUID().equals(s)) {
 				list.add(ps.getLocation());
-				active.remove(ps);
-				abgelaufen.remove(ps);
-				SQLHandler.getInstance().sendStatement("UPDATE Schilder SET Active = 0 WHERE Player = '"+s+"'");
+				delete.add(ps);
 			}
 		}
+		for (PlayerSign ps : delete) {
+			if (ps.getBesitzerUUID().equals(s)) {
+				active.remove(ps);
+				abgelaufen.remove(ps);
+			}
+		}
+		SQLHandler.getInstance().sendStatement("UPDATE Schilder SET Active = 0 WHERE Player = '" + s + "'");
 		return list;
 	}
 }
