@@ -290,7 +290,15 @@ public class Main extends JavaPlugin {
 						} else {
 							noPermission(p);
 						}
-					} else {
+					}else if(args[0].equalsIgnoreCase("removeall")) {
+						if(p.hasPermission("signs.admin")) {
+							mess.toPlayer(p, "Nur über die Konsole möglich!", Messages.IMPORTANT);
+						}else {
+							noPermission(p);
+						}
+					}
+					
+					else {
 
 						mess.toPlayer(p, "Unbekannter Sub-Befehl", Messages.IMPORTANT);
 					}
