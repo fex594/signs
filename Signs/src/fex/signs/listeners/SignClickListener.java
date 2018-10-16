@@ -60,8 +60,6 @@ public class SignClickListener extends MyListener implements Listener {
 								mess.toPlayer(e.getPlayer(), out);
 							}
 						}
-	//					mess.toPlayer(e.getPlayer(), sql.getInfos(Integer.parseInt(s.getLine(1).replace("§2#", "")), e.getPlayer()));
-	//Wurde ersetzt
 					}
 				}
 
