@@ -31,20 +31,20 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
 		getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
 		getServer().getPluginManager().registerEvents(new SignClickListener(), this);
-		
-		//Zeitliches anzeigen der abgelaufenen Schilder
+
+		// Zeitliches anzeigen der abgelaufenen Schilder
 		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
 			public void run() {
 				getAbgelaufene();
 			}
 		}, 20 * 20L, 20 * 600L);// 20*600L = 10 Minuten
-		
-		//Lokale Schilder Auto-Update
+
+		// Lokale Schilder Auto-Update
 		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
 			public void run() {
 				CommandTransformer.getInstance().update();
 			}
-		}, 20 * 20L, 20 * 60*60L);// 20*60*30L = 60 Minuten
+		}, 20 * 20L, 20 * 60 * 60L);// 20*60*30L = 60 Minuten
 
 		mess.toConsole("Plugin gestartet");
 
@@ -110,7 +110,8 @@ public class Main extends JavaPlugin {
 										}
 									}
 								} else {
-									List<PlayerSign> list = CommandTransformer.getInstance().getAbgelaufen(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
+									List<PlayerSign> list = CommandTransformer.getInstance()
+											.getAbgelaufen(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
 									mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
 									if (list.isEmpty()) {
 										mess.toPlayer(p, "Keine abgelaufenen Schilder");
@@ -216,20 +217,26 @@ public class Main extends JavaPlugin {
 									try {
 										String location = CommandTransformer.getInstance()
 												.getLocation(Integer.parseInt(args[1]));
-										location = location.replace("(", "").replace(")", "");
-										String world = location.substring(0, location.indexOf(":")).replace(":", "");
-										double erster = Integer.parseInt(
-												location.substring(location.indexOf(":"), location.indexOf("/"))
-														.replace(":", "").replace("/", ""))
-												+ 0.5;
-										double zweiter = Integer.parseInt(
-												location.substring(location.indexOf("/"), location.lastIndexOf("/"))
-														.replace("/", ""));
-										double dritter = Integer.parseInt(
-												location.substring(location.lastIndexOf("/")).replace("/", "")) + 0.5;
-										Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter,
-												dritter);
-										p.teleport(l);
+										if (location == null) {
+											mess.toPlayer(p, "Schild existiert nicht mehr", Messages.IMPORTANT);
+										} else {
+											location = location.replace("(", "").replace(")", "");
+											String world = location.substring(0, location.indexOf(":")).replace(":",
+													"");
+											double erster = Integer.parseInt(
+													location.substring(location.indexOf(":"), location.indexOf("/"))
+															.replace(":", "").replace("/", ""))
+													+ 0.5;
+											double zweiter = Integer.parseInt(
+													location.substring(location.indexOf("/"), location.lastIndexOf("/"))
+															.replace("/", ""));
+											double dritter = Integer.parseInt(
+													location.substring(location.lastIndexOf("/")).replace("/", ""))
+													+ 0.5;
+											Location l = new Location(Bukkit.getServer().getWorld(world), erster,
+													zweiter, dritter);
+											p.teleport(l);
+										}
 									} catch (NumberFormatException e) {
 										mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
 									} catch (StringIndexOutOfBoundsException ex) {
