@@ -358,7 +358,7 @@ public class Main extends JavaPlugin {
 		if (p.hasPermission("schilder.user")) {
 			mess.toPlayer(p, "§2--- §6Befehlsliste §2---");
 			mess.toPlayer(p, "/signs help §7- Zeigt die Befehlsliste an");
-			mess.toPlayer(p, "/signs info §a[id] §7- Gibt Infos §ber ein Schild");
+			mess.toPlayer(p, "/signs info §a[id] §7- Gibt Infos über ein Schild");
 			if (p.hasPermission("schilder.support")) {
 				mess.toPlayer(p, "§2--- §6Support-Befehle §2---");
 				mess.toPlayer(p, "/signs getSign §7- Gibt ein Schild");
