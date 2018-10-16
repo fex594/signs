@@ -58,7 +58,7 @@ public class CommandTransformer {
 		} else {
 			List<PlayerSign> pAbgelaufen = new ArrayList<PlayerSign>();
 			for (PlayerSign ps : abgelaufen) {
-				if (ps.getBesitzerUUID() == name) {
+				if (ps.getBesitzerUUID().equals(name)) {
 					pAbgelaufen.add(ps);
 				}
 			}
