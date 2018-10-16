@@ -1,10 +1,9 @@
 package fex.signs.listeners;
 
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.Calendar;
-//import java.util.HashSet;
 import java.util.List;
-//import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-//import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,20 +18,16 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.util.Vector;
 
 import fex.signs.signs.CommandTransformer;
-//import fex.signs.signs.SQL_Connection;
 import fex.signs.util.Messages;
 
 public class SignChangeListener extends MyListener implements Listener {
 
 	private final int MAX_EXPAND_DAYS = 31;
 
-//	public SignChangeListener(SQL_Connection connection) {
-//		super(connection);
-//	}
-
-	//Überarbeiten!!!
+	// Überarbeiten!!!
 	/**
 	 * Triggered beim Erstellen des Schildes, wenn Text gesendet wird
+	 * 
 	 * @param e
 	 */
 	@EventHandler
@@ -71,7 +65,7 @@ public class SignChangeListener extends MyListener implements Listener {
 							}
 
 							// Datum = Ablaufdatum
-							int intLong = 14;	//Standardzeit bis Schild abgelaufen
+							int intLong = 14; // Standardzeit bis Schild abgelaufen
 							if (!lastLong.isEmpty()) {
 								try {
 									intLong = Integer.parseInt(lastLong);
@@ -85,17 +79,18 @@ public class SignChangeListener extends MyListener implements Listener {
 							}
 							Calendar c = Calendar.getInstance();
 							c.add(Calendar.DAY_OF_MONTH, intLong);
-							Date date = new Date(c.getTimeInMillis());				//Ablaufdatum
+							Date date = new Date(c.getTimeInMillis()); // Ablaufdatum
 							c = Calendar.getInstance();
 							c.add(Calendar.DAY_OF_MONTH, MAX_EXPAND_DAYS);
-							Date lastDate = new Date(c.getTimeInMillis());			//Spätestes Ablaufdatum
+							Date lastDate = new Date(c.getTimeInMillis()); // Spätestes Ablaufdatum
 							String loc = "(" + e.getBlock().getLocation().getWorld().getName() + ":"
 									+ e.getBlock().getLocation().getBlockX() + "/"
 									+ e.getBlock().getLocation().getBlockY() + "/"
 									+ e.getBlock().getLocation().getBlockZ() + ")";
 							e.setLine(0, "§4" + localtype);
-							e.setLine(1, "§2#" + CommandTransformer.getInstance().putNewSign(p2.getUniqueId().toString(), date, 1, loc, localtype,
-									e.getPlayer().getUniqueId().toString(), lastDate));
+							e.setLine(1,
+									"§2#" + CommandTransformer.getInstance().putNewSign(p2.getUniqueId().toString(),
+											date, 1, loc, localtype, e.getPlayer().getUniqueId().toString(), lastDate));
 							e.setLine(2, "§6" + p2.getName());
 							e.setLine(3, "[Klick mich]");
 						} else {
@@ -117,25 +112,25 @@ public class SignChangeListener extends MyListener implements Listener {
 			return isType(down.getType());
 		} else if (b.getType() == Material.WALL_SIGN) {
 
-		
 			/**
-			 * Tempor�re L�sung, Achtung erkennt unerlaubten Untergrund nicht, wenn man direkt im Schildblock steht
+			 * Tempor�re L�sung, Achtung erkennt unerlaubten Untergrund nicht, wenn man
+			 * direkt im Schildblock steht
 			 */
-//			Set<Material> blockedList = new HashSet<Material>();
-//			blockedList.add(Material.SIGN);
-//			blockedList.add(Material.WALL_SIGN);
-//			blockedList.add(Material.AIR);
+			// Set<Material> blockedList = new HashSet<Material>();
+			// blockedList.add(Material.SIGN);
+			// blockedList.add(Material.WALL_SIGN);
+			// blockedList.add(Material.AIR);
 			List<Block> targets = p.getLastTwoTargetBlocks(null, 10);
 			Block target = targets.get(0);
-//			Block target = p.getTargetBlock(null, 20);
+			// Block target = p.getTargetBlock(null, 20);
 			BlockFace blockFace = b.getFace(target);
-			
+
 			/**
 			 * Fehler! CraftSign --> WallSign
 			 */
-//			 WallSign s = (WallSign) b.getState();
-//			 BlockFace blockFace = s.getFacing();// s.getAttachedFace();
-			
+			// WallSign s = (WallSign) b.getState();
+			// BlockFace blockFace = s.getFacing();// s.getAttachedFace();
+
 			Vector v = null;
 			if (blockFace == BlockFace.NORTH) {
 				v = new Vector(0, 0, 1);
@@ -157,19 +152,22 @@ public class SignChangeListener extends MyListener implements Listener {
 
 	}
 
+	// Ändern in Array oÄ
 	public boolean isType(Material m) {
-		if (m == Material.SAND || m == Material.GRAVEL || m == Material.ANVIL || m == Material.ICE
-				|| m == Material.FROSTED_ICE || m == Material.BLACK_CONCRETE_POWDER
-				|| m == Material.BLUE_CONCRETE_POWDER || m == Material.BROWN_CONCRETE_POWDER
-				|| m == Material.CYAN_CONCRETE_POWDER || m == Material.GRAY_CONCRETE_POWDER
-				|| m == Material.GREEN_CONCRETE_POWDER || m == Material.LIGHT_BLUE_CONCRETE_POWDER
-				|| m == Material.LIGHT_GRAY_CONCRETE_POWDER || m == Material.LIME_CONCRETE_POWDER
-				|| m == Material.MAGENTA_CONCRETE_POWDER || m == Material.ORANGE_CONCRETE_POWDER
-				|| m == Material.PINK_CONCRETE_POWDER || m == Material.PURPLE_CONCRETE_POWDER
-				|| m == Material.RED_CONCRETE_POWDER || m == Material.WHITE_CONCRETE_POWDER
-				|| m == Material.YELLOW_CONCRETE_POWDER || m == Material.AIR || m == Material.BLUE_ICE)
+		List<Material> blockedList = Arrays.asList(new Material[] { Material.SAND, Material.RED_SAND, Material.GRAVEL,
+				Material.ANVIL, Material.CHIPPED_ANVIL, Material.DAMAGED_ANVIL, Material.ICE, Material.FROSTED_ICE,
+				Material.BLACK_CONCRETE_POWDER, Material.BLUE_CONCRETE_POWDER, Material.BROWN_CONCRETE_POWDER,
+				Material.CYAN_CONCRETE_POWDER, Material.GRAY_CONCRETE_POWDER, Material.GREEN_CONCRETE_POWDER,
+				Material.LIGHT_BLUE_CONCRETE_POWDER, Material.LIGHT_GRAY_CONCRETE_POWDER, Material.LIME_CONCRETE_POWDER,
+				Material.MAGENTA_CONCRETE_POWDER, Material.ORANGE_CONCRETE_POWDER, Material.PINK_CONCRETE_POWDER,
+				Material.PURPLE_CONCRETE_POWDER, Material.RED_CONCRETE_POWDER, Material.WHITE_CONCRETE_POWDER,
+				Material.YELLOW_CONCRETE_POWDER, Material.AIR, Material.BLUE_ICE, Material.CACTUS,
+				Material.ACACIA_LEAVES, Material.BIRCH_LEAVES, Material.SPRUCE_LEAVES, Material.OAK_LEAVES,
+				Material.DARK_OAK_LEAVES, Material.JUNGLE_LEAVES });
+		if (blockedList.contains(m))
 			return false;
-		return true;
+		else
+			return true;
 	}
 
 	public void cancelChangeEvent(SignChangeEvent e, String grund) {
