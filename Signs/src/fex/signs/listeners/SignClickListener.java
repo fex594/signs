@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import fex.signs.signs.CommandTransformer;
 import fex.signs.util.PlayerSign;
+import fex.signs.util.Util;
 
 public class SignClickListener extends MyListener implements Listener {
 
@@ -48,8 +49,8 @@ public class SignClickListener extends MyListener implements Listener {
 										} else {
 											active = "ist §cinaktiv";
 										}
-										String pName = Bukkit.getOfflinePlayer(UUID.fromString(ps.getBesitzerUUID())).getName();
-										String erName = Bukkit.getOfflinePlayer(UUID.fromString(ps.getErstellerUUID())).getName();
+										String pName = Util.UUIDtoPlayer(ps.getBesitzerUUID());
+										String erName = Util.UUIDtoPlayer(ps.getErstellerUUID());
 										out = "§6Ein §2" + ps.getType() + "§6-Schild für §2" + pName + "§6 mit der ID §2"
 												+ ID + "§6 " + active + "§6. Ersteller: §2" + erName;
 										if (!(ps.getText() == null)) {

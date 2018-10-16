@@ -101,8 +101,7 @@ public class Main extends JavaPlugin {
 										}
 									}
 								} else {
-									List<PlayerSign> list = CommandTransformer.getInstance().getAbgelaufen(
-											Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
+									List<PlayerSign> list = CommandTransformer.getInstance().getAbgelaufen(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
 									mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
 									if (list.isEmpty()) {
 										mess.toPlayer(p, "Keine abgelaufenen Schilder");

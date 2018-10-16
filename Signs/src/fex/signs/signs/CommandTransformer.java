@@ -101,7 +101,9 @@ public class CommandTransformer {
 
 	public boolean setInaktiv(int ID) {
 		String args = "UPDATE Schilder SET Active=0 WHERE ID=" + ID;
-		return SQLHandler.getInstance().sendStatement(args);
+		boolean result = SQLHandler.getInstance().sendStatement(args);
+		update();
+		return result;
 
 	}
 
@@ -126,7 +128,9 @@ public class CommandTransformer {
 
 	public boolean commentSign(int ID, String text) {
 		String output = "UPDATE Schilder SET Text = '" + text + "' WHERE ID = " + ID;
-		return SQLHandler.getInstance().sendStatement(output);
+		boolean x = SQLHandler.getInstance().sendStatement(output);
+		update();
+		return x;
 	}
 
 	public java.sql.Date getDate(int ID) {
@@ -151,6 +155,7 @@ public class CommandTransformer {
 		}
 		String args = "UPDATE Schilder SET Datum = '" + p.getAblaufDatum() + "' WHERE ID=" + ID;
 		SQLHandler.getInstance().sendStatement(args);
+		update();
 		if (finished) {
 			return "Schild erfolgreich um " + days + " Tage verlängert";
 		} else {
@@ -207,7 +212,8 @@ public class CommandTransformer {
 				+ "', " + active + ", '" + loc + "', '" + date + "', '" + type + "', '" + ersteller + "', '" + lastDate
 				+ "')";
 		SQLHandler.getInstance().sendStatement(st);
-		return ++maxID;
+		update();
+		return maxID;
 	}
 
 	/**
