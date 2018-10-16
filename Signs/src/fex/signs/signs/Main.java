@@ -43,7 +43,7 @@ public class Main extends JavaPlugin {
 
 	public void getAbgelaufene() {
 
-		int x = CommandTransformer.getInstance().getActive(null).size();
+		int x = CommandTransformer.getInstance().getAbgelaufen(null).size();
 		if (x > 0) {
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				if (p.hasPermission("signs.smod")) {
