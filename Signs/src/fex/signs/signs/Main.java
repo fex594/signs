@@ -324,7 +324,7 @@ public class Main extends JavaPlugin {
 						} else if (args[0].equalsIgnoreCase("signTypes")) {
 							if (p.hasPermission("signs.support")) {
 								mess.toPlayer(p,
-										"Verfügbare Schilder: §2[Bauregeln], [Verschönern], [Abriss], [Verlängern]");
+										"Verfügbare Schilder: §2[Bauregeln], [Verschönern], [Abriss], [Weiterbauen]");
 							} else {
 								noPermission(p);
 							}
