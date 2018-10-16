@@ -167,7 +167,7 @@ public class SignChangeListener extends MyListener implements Listener {
 				Material.BIRCH_PRESSURE_PLATE, Material.DARK_OAK_PRESSURE_PLATE, Material.JUNGLE_PRESSURE_PLATE,
 				Material.OAK_PRESSURE_PLATE, Material.SPRUCE_PRESSURE_PLATE, Material.HEAVY_WEIGHTED_PRESSURE_PLATE,
 				Material.LIGHT_WEIGHTED_PRESSURE_PLATE, Material.STONE_PRESSURE_PLATE, Material.CHORUS_FRUIT,
-				Material.CHORUS_FLOWER, Material.CHORUS_PLANT });
+				Material.CHORUS_FLOWER, Material.CHORUS_PLANT, Material.SIGN, Material.WALL_SIGN });
 		if (blockedList.contains(m))
 			return false;
 		else
