@@ -13,6 +13,7 @@ import java.util.List;
 import com.mysql.jdbc.Connection;
 
 import fex.signs.util.ConnectionInfo;
+import fex.signs.util.Messages;
 import fex.signs.util.NoSignFoundException;
 import fex.signs.util.PSConverter;
 import fex.signs.util.PlayerSign;
@@ -21,7 +22,6 @@ public class SQLHandler {
 	private static SQLHandler instance;
 	private Connection connection; // Datenbankverbindung
 	private ConnectionInfo ci; // Logininfos für DB
-	private static int maxID; // Aktuelle Max-ID
 
 	/**
 	 * Deaktiviert den Standartkonstruktor
@@ -69,7 +69,6 @@ public class SQLHandler {
 		if (connection != null) {
 			try {
 				connection.close();
-				System.out.println("Verbindung geschlossen");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -90,38 +89,6 @@ public class SQLHandler {
 		}
 	}
 
-	/**
-	 * Legt eine neues Schild in der Datenbank an
-	 * 
-	 * @param name
-	 *            Spielername
-	 * @param date
-	 *            Ablaufdatum
-	 * @param active
-	 *            Aktivität: 1 - Aktiv, 0 - Inaktiv
-	 * @param loc
-	 *            Schildposition
-	 * @param text
-	 *            Beschreibung zum Schild
-	 * @param typ
-	 *            Schild-Typ
-	 * @return ID des Schilds
-	 */
-	public int putNewSign(String name, Date date, int active, String loc, String typ, String ersteller, Date lastDate) {
-		String type = typ.replace("[", "").replace("]", "");
-		try {
-			String st = "INSERT INTO Schilder (Player, Active, Loc, Datum, Typ, Ersteller, Lastdate) VALUES ('" + name
-					+ "', " + active + ", '" + loc + "', '" + date + "', '" + type + "', '" + ersteller + "', '"
-					+ lastDate + "')";
-			PreparedStatement sql = connection.prepareStatement(st);
-			sql.executeUpdate();
-			return ++maxID;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return -1;
-	}
 
 	// Liefert alle aktiven Schilder zurück
 	public List<PlayerSign> getActiveSigns() {
@@ -185,6 +152,41 @@ public class SQLHandler {
 
 		closeConnection(); // Datenbankverbindung schließen
 		return result;
+	}
+	
+	public List<PlayerSign> sendResultStatements(String args) {
+		openConnection(); // Datenbankverbindung öffnen
+
+		List<PlayerSign> result = new ArrayList<>(); 
+		try {
+			Statement stm = connection.createStatement();
+			ResultSet set = stm.executeQuery(args);
+			while(set.next()) {
+				result.add(PSConverter.convert(set));
+			}}catch(SQLException e) {
+				Messages.getInstance().toConsole("Fehler beim Senden/Empfangen von Daten: "+args);
+			}
+
+		closeConnection(); // Datenbankverbindung schließen
+		return result;
+	}
+	
+	public boolean sendStatement(String args) {
+		boolean success = false;
+		
+		openConnection();
+		
+		try {
+			PreparedStatement sql = connection.prepareStatement(args);
+			sql.executeUpdate();
+			success = true;
+		}catch(SQLException e) {
+			Messages.getInstance().toConsole("Fehler beim Ausführend des Statements: "+args);
+		}
+		
+		closeConnection();
+		
+		return success;
 	}
 
 	public static Date now() {

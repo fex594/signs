@@ -1,7 +1,6 @@
 package fex.signs.signs;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import fex.signs.listeners.*;
 import fex.signs.util.Messages;
+import fex.signs.util.PlayerSign;
 
 public class Main extends JavaPlugin {
 //	private SQL_Connection connection;				//SQL Verbindung
@@ -48,7 +48,7 @@ public class Main extends JavaPlugin {
 
 	public void getAbgelaufene() {
 
-		int x = SQLHandler.getInstance().abgelaufen.size();
+		int x = CommandTransformer.getInstance().getActive(null).size();
 		if (x > 0) {
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				if (p.hasPermission("signs.smod")) {
@@ -98,7 +98,7 @@ public class Main extends JavaPlugin {
 				} else if (args[0].equalsIgnoreCase("list")) {
 					if (p.hasPermission("signs.smod")) {
 						if (args.length == 1) {
-							ArrayList<String> list = connection.getAbgelaufen();
+							List<PlayerSign> list = CommandTransformer.getInstance().getAbgelaufen(null);
 							mess.toPlayer(p, "Abgelaufene Schilder:");
 							if (list.isEmpty()) {
 								mess.toPlayer(p, "Keine Schilder offen", Messages.NORMAL);
@@ -108,14 +108,14 @@ public class Main extends JavaPlugin {
 								}
 							}
 						} else {
-							ArrayList<String> list = connection.getAbgelaufen(
+							List<PlayerSign> list = CommandTransformer.getInstance().getAbgelaufen(
 									Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
 							mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
 							if (list.isEmpty()) {
 								mess.toPlayer(p, "Keine abgelaufenen Schilder");
 							} else {
 								for (int z = 0; z < list.size(); z++) {
-									mess.toPlayer(p, list.get(z));
+									mess.toPlayer(p, list.get(z).toString());
 								}
 							}
 						}
@@ -126,7 +126,7 @@ public class Main extends JavaPlugin {
 					if (p.hasPermission("signs.support")) {
 						if (args.length == 1) {
 							mess.toPlayer(p, "Aktive Schilder: ");
-							ArrayList<String> list = connection.getActive();
+							List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
 							if (list.isEmpty()) {
 								mess.toPlayer(p, "Keine Schilder offen", Messages.NORMAL);
 							} else {
@@ -136,13 +136,12 @@ public class Main extends JavaPlugin {
 							}
 						} else {
 							mess.toPlayer(p, "Aktive Schilder von " + args[1]);
-							ArrayList<String> list = connection
-									.getActive(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
+							List<PlayerSign> list =  CommandTransformer.getInstance().getActive(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
 							if (list.isEmpty()) {
 								mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine offenen Schilder");
 							} else {
 								for (int z = 0; z < list.size(); z++) {
-									mess.toPlayer(p, list.get(z));
+									mess.toPlayer(p, list.get(z).toString());
 								}
 							}
 						}
@@ -156,7 +155,7 @@ public class Main extends JavaPlugin {
 						} else {
 							try {
 								int id = Integer.parseInt(args[1]);
-								mess.toPlayer(p, connection.getInfos(id, p), Messages.NORMAL);
+								CommandTransformer.getInstance().getInfo(id, p);
 							} catch (NumberFormatException e) {
 								mess.toPlayer(p, args[1] + " ist keine Zahl!", Messages.IMPORTANT);
 							}
@@ -174,7 +173,7 @@ public class Main extends JavaPlugin {
 								s = s + args[z] + " ";
 							}
 							s = s + args[args.length - 1];
-							if (connection.commentSign(Integer.parseInt(args[1]), s)) {
+							if (CommandTransformer.getInstance().commentSign(Integer.parseInt(args[1]), s)) {
 								mess.toPlayer(p, "Schild erfolgreich aktualisiert", Messages.NORMAL);
 							} else {
 								mess.toPlayer(p, "Fehler beim Aktualisieren des Schildes", Messages.IMPORTANT);
@@ -190,10 +189,10 @@ public class Main extends JavaPlugin {
 						} else {
 							try {
 								int id = Integer.parseInt(args[1]);
-								boolean state1 = connection.isActive(id);
-								boolean state2 = connection.isInArea(id);
+								boolean state1 = CommandTransformer.getInstance().isActive(id);
+								boolean state2 = (id <= CommandTransformer.getInstance().getMaxID());
 								if (state1 && state2) {
-									connection.setInaktivSign(Integer.valueOf(id));
+									CommandTransformer.getInstance().setInaktiv(id);
 									mess.toPlayer(p, "Schild deaktiviert");
 								} else if (!state2) {
 									mess.toPlayer(p, "Das Schild existiert nicht", Messages.IMPORTANT);
@@ -213,7 +212,7 @@ public class Main extends JavaPlugin {
 							mess.toPlayer(p, "Missing ID");
 						} else {
 							try {
-								String location = connection.getLocation(Integer.parseInt(args[1]));
+								String location = CommandTransformer.getInstance().getLocation(Integer.parseInt(args[1]));
 								location = location.replace("(", "").replace(")", "");
 								String world = location.substring(0, location.indexOf(":")).replace(":", "");
 								double erster = Integer
@@ -249,17 +248,7 @@ public class Main extends JavaPlugin {
 							try {
 								int id = Integer.parseInt(args[1]);
 								int days = Integer.parseInt(args[2]);
-								java.sql.Date d = new java.sql.Date(connection.getDate(id).getTime());
-								Calendar c = Calendar.getInstance();
-								c.setTime(d);
-								c.add(Calendar.DAY_OF_MONTH, days);
-								d = new java.sql.Date(c.getTimeInMillis());
-								boolean finished = connection.setDate(id, d, false);
-								if (finished) {
-									mess.toPlayer(p, "Schild erfolgreich um " + days + " Tage verl§ngert");
-								} else {
-									mess.toPlayer(p, "Maximale Verl§ngerungszeit erreicht!", Messages.IMPORTANT);
-								}
+								mess.toPlayer(p, CommandTransformer.getInstance().setDate(id, days, false));
 							} catch (NumberFormatException e) {
 								mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
 							}
@@ -275,17 +264,7 @@ public class Main extends JavaPlugin {
 							try {
 								int id = Integer.parseInt(args[1]);
 								int days = Integer.parseInt(args[2]);
-								java.sql.Date d = new java.sql.Date(connection.getDate(id).getTime());
-								Calendar c = Calendar.getInstance();
-								c.setTime(d);
-								c.add(Calendar.DAY_OF_MONTH, days);
-								d = new java.sql.Date(c.getTimeInMillis());
-								boolean finished = connection.setDate(id, d, true);
-								if (finished) {
-									mess.toPlayer(p, "Schild erfolgreich um " + days + " Tage verl§ngert");
-								} else {
-									mess.toPlayer(p, "Maximale Verl§ngerungszeit erreicht!", Messages.IMPORTANT);
-								}
+								mess.toPlayer(p, CommandTransformer.getInstance().setDate(id, days, true));
 							} catch (NumberFormatException e) {
 								mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
 							}
@@ -300,7 +279,7 @@ public class Main extends JavaPlugin {
 						} else {
 							String uuid = Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString();
 							try {
-								ArrayList<String> liste = connection.deleteAllActiveSigns(uuid);
+								List<String> liste = CommandTransformer.getInstance().deleteAllSigns(uuid);
 								for (int count = 0; count < liste.size(); count++) {
 									String location = liste.get(count);
 									try {

@@ -29,6 +29,10 @@ public class PlayerSign {
 	public int getID() {
 		return ID;
 	}
+	
+	public void setAblaufDatum(Date d) {
+		this.ablaufDatum = d;
+	}
 
 	public String getBesitzerUUID() {
 		return besitzerUUID;
