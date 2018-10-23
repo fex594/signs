@@ -94,7 +94,7 @@ public class Messages {
 		
 		TextComponent message2 = new TextComponent(" [Seite "+count+"] ");
 		message2.setBold(true);
-		message2.setColor(ChatColor.GRAY);
+		message2.setColor(ChatColor.GOLD);
 		message.addExtra(message2);
 //		p.spigot().sendMessage(message2);
 
