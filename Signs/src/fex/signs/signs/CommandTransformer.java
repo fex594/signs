@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import fex.signs.util.Messages;
@@ -108,21 +109,35 @@ public class CommandTransformer {
 	}
 
 	public void update() {
-		try {
-			SQLHandler handle = SQLHandler.getInstance();
-			this.active = handle.update(); // Update aktive Schilder
-			// System.out.println(active.size());
-			this.abgelaufen = new ArrayList<PlayerSign>();
-			for (PlayerSign ps : active) // Update abgelaufene Schilder
-				if (ps.getAblaufDatum().before(Util.now())) {
-					this.abgelaufen.add(ps);
+		Bukkit.getScheduler().runTaskAsynchronously(Main.getProvidingPlugin(getClass()), new Runnable() {
+
+			@Override
+			public void run() {
+//				for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+//					p.sendMessage("Update Gestartet");
+//				}
+//				System.out.println("Update gestartet");
+				try {
+					SQLHandler handle = SQLHandler.getInstance();
+					active = handle.update(); // Update aktive Schilder
+					abgelaufen = new ArrayList<PlayerSign>();
+					for (PlayerSign ps : active) // Update abgelaufene Schilder
+						if (ps.getAblaufDatum().before(Util.now())) {
+							abgelaufen.add(ps);
+						}
+
+					maxID = handle.getMaxID(); // Update MaxID
+
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
-
-			this.maxID = handle.getMaxID(); // Update MaxID
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+//				for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+//					p.sendMessage("Update Beendet");
+//				}
+//				System.out.println("Update beendet");
+			}
+			
+		});
 
 	}
 

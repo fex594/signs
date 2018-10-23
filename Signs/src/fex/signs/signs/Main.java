@@ -25,8 +25,13 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onEnable() {
 
-		// Verbindung zu MySQL aufbauen, Daten aus Config auslesen
+		//Auto-Update + First Init
 		mess = Messages.getInstance();
+		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
+			public void run() {
+				CommandTransformer.getInstance().update();
+			}
+		}, 20*60*30L, 20 * 60 * 60L);// 20*60*60L = 60 Minuten
 
 		getServer().getPluginManager().registerEvents(new SignChangeListener(), this);
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
@@ -41,12 +46,6 @@ public class Main extends JavaPlugin {
 		}, 20 * 20L, 20 * 600L);// 20*600L = 10 Minuten
 
 		// Lokale Schilder Auto-Update
-		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
-			public void run() {
-				CommandTransformer.getInstance().update();
-			}
-		}, 20 * 20L, 20 * 60 * 60L);// 20*60*30L = 60 Minuten
-
 		mess.toConsole("Plugin gestartet");
 
 	}
