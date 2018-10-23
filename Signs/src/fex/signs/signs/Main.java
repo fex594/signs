@@ -490,7 +490,7 @@ public class Main extends JavaPlugin {
 					for (PlayerSign ps : list) {
 						mastered.add(ps.toString());
 					}
-					String send = "/signs listActive " + args[1] + " -";
+					String send = "/signs list " + args[1] + " -";
 					mess.toPlayerStaged(p, mastered, Integer.parseInt(args[3].replace("-", "")), send);
 				}
 
@@ -507,27 +507,27 @@ public class Main extends JavaPlugin {
 		if (p.hasPermission("signs.user")) {
 			mess.toPlayer(p, "§2--- §6Befehlsliste §2---");
 			mess.toPlayer(p, "/signs help §7- Zeigt die Befehlsliste an");
-			mess.toPlayer(p, "/signs info §a[id] §7- Gibt Infos über ein Schild");
+			mess.toPlayer(p, "/signs info §8[id] §7- Gibt Infos über ein Schild");
 			if (p.hasPermission("signs.support")) {
 				mess.toPlayer(p, "§2--- §6Support-Befehle §2---");
 				mess.toPlayer(p, "/signs getSign §7- Gibt ein Schild");
-				mess.toPlayer(p, "/signs listActive §a{Name}§7- Zeigt alle aktiven Schilder an");
-				mess.toPlayer(p, "/signs comment §a[id] [Text] §7- Kommentiert ein Schild");
-				mess.toPlayer(p, "/signs tp §a[id]§7 - Tpt zu dem Schild");
+				mess.toPlayer(p, "/signs listActive §8{Name} {-Seite} §7- Zeigt alle aktiven Schilder an");
+				mess.toPlayer(p, "/signs comment §8[id] [Text] §7- Kommentiert ein Schild");
+				mess.toPlayer(p, "/signs tp §8[id]§7 - Tpt zu dem Schild");
 				mess.toPlayer(p, "/signs signTypes§7 - Listet verfügbare Schilder auf");
 				if (p.hasPermission("signs.smod")) {
 					mess.toPlayer(p, "§2--- §6SMod-Befehle §2---");
 					mess.toPlayer(p,
-							"/signs expand §a[id] [Tage] §7- Verlängert ein Schild um x Tage (maximale Zeit: 30 Tage)");
-					mess.toPlayer(p, "/signs list §a{Name}§7- Zeigt alle abgelaufenen Schilder an");
-					mess.toPlayer(p, "/signs remove §a[id]§7 - Setzt ein Schild inaktiv (Falls nicht vorhanden)");
+							"/signs expand §8[id] [Tage] §7- Verlängert ein Schild um x Tage (maximale Zeit: 30 Tage)");
+					mess.toPlayer(p, "/signs list §8{all} {Name} {-Seite} §7- Zeigt alle abgelaufenen Schilder an");
+					mess.toPlayer(p, "/signs remove §8[id]§7 - Setzt ein Schild inaktiv (Falls nicht vorhanden)");
 					if (p.hasPermission("signs.admin")) {
 						mess.toPlayer(p, "§2--- §6Admin-Befehle §2---");
 						mess.toPlayer(p,
-								"/signs forceexpand §a[id] [zeit]§7 - Verlängert ein Schild um x Tage (Keine Begrenzung)");
+								"/signs forceexpand §8[id] [zeit]§7 - Verlängert ein Schild um x Tage (Keine Begrenzung)");
 						mess.toPlayer(p, "§2--- §6Konsolen-Befehle §2---");
 						mess.toPlayer(p,
-								"/signs removeall §a[Spieler]§7 - Setzt alle aktiven Schilder eines Spielers inaktiv und entfernt die Schilder");
+								"/signs removeall §8[Spieler]§7 - Setzt alle aktiven Schilder eines Spielers inaktiv und entfernt die Schilder");
 					}
 				}
 			}
