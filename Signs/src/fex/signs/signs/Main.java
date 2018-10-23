@@ -85,7 +85,7 @@ public class Main extends JavaPlugin {
 						if (p.hasPermission("signs.support")) {
 							ItemStack xSchild = new ItemStack(Material.SIGN);
 							ItemMeta meta = xSchild.getItemMeta();
-							meta.setDisplayName("§6Adminschild");
+							meta.setDisplayName("§7Adminschild");
 							xSchild.setItemMeta(meta);
 							p.getInventory().addItem(xSchild);
 							mess.toPlayer(p, "Ein magisches Schild ist erschienen", Messages.NORMAL);
