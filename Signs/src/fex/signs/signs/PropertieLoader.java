@@ -37,11 +37,11 @@ public class PropertieLoader {
 				folder.mkdirs();
 			}
 			PrintWriter w = new PrintWriter(new FileOutputStream(path + "/sql.properties"));
-			w.println("host=");
-			w.println("port=");
-			w.println("dbName=");
-			w.println("username=");
-			w.println("pw=");
+			w.println("host=localhost");
+			w.println("port=3306");
+			w.println("dbName=database");
+			w.println("username=root");
+			w.println("pw=root");
 			w.flush();
 			w.close();
 		} catch (FileNotFoundException e) {
