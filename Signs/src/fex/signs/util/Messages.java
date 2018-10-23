@@ -72,6 +72,9 @@ public class Messages {
 	}
 
 	public void toPlayerStaged(Player p, List<String> s, int count, String befehl) {
+		int max = s.size()/5;
+		if(s.size()%5!=0) max++;
+		if (count > max) count = max;
 		if(count <= 0) count = 1;
 		int localInt = (count-1)*5;
 		for (int i = localInt; i <= (localInt + 4); i++) {
