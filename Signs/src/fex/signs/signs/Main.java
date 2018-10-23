@@ -383,7 +383,7 @@ public class Main extends JavaPlugin {
 
 			if (args.length == 1) {
 				mess.toPlayer(p, "Abgelaufene Schilder: ");
-				List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
+				List<PlayerSign> list = CommandTransformer.getInstance().getAbgelaufen(null);
 				if (list.isEmpty()) {
 					mess.toPlayer(p, "Keine Schilder abgelaufen", Messages.NORMAL);
 				} else {
@@ -396,7 +396,7 @@ public class Main extends JavaPlugin {
 			} else if (args.length == 2) {
 				if (args[1].startsWith("-")) {
 					mess.toPlayer(p, "Abgelaufene Schilder");
-					List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
+					List<PlayerSign> list = CommandTransformer.getInstance().getAbgelaufen(null);
 					if (list.isEmpty()) {
 						mess.toPlayer(p, "Keine Schilder gefunden", Messages.NORMAL);
 					}
@@ -409,7 +409,7 @@ public class Main extends JavaPlugin {
 				} else {
 					mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
 					List<PlayerSign> list = CommandTransformer.getInstance()
-							.getActive(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
+							.getAbgelaufen(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
 					if (list.isEmpty()) {
 						mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine abgelaufene Schilder");
 					} else {
@@ -426,7 +426,7 @@ public class Main extends JavaPlugin {
 				} else if (args[2].startsWith("-")) {
 					mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
 					List<PlayerSign> list = CommandTransformer.getInstance()
-							.getActive(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
+							.getAbgelaufen(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
 					if (list.isEmpty()) {
 						mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine abgelaufene Schilder");
 					} else {

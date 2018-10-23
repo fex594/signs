@@ -87,6 +87,13 @@ public class Messages {
 			message.setColor(ChatColor.GOLD);
 			message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, (befehl + (count - 1))));
 		}
+//		p.spigot().sendMessage(message);
+		
+		TextComponent message2 = new TextComponent(" [Seite "+count+"] ");
+		message2.setBold(true);
+		message2.setColor(ChatColor.GRAY);
+		message.addExtra(message2);
+//		p.spigot().sendMessage(message2);
 
 
 		TextComponent message3 = new TextComponent("----->");
@@ -95,7 +102,7 @@ public class Messages {
 			message3.setColor(ChatColor.GRAY);
 		} else {
 			message3.setColor(ChatColor.GOLD);
-			message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, (befehl + (count + 1))));
+			message3.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, (befehl + (count + 1))));
 		}
 		message.addExtra(message3);
 		p.spigot().sendMessage(message);
