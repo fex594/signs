@@ -370,13 +370,15 @@ public class Main extends JavaPlugin {
 						mess.toPlayerStaged(p, mastered, Integer.parseInt(args[2].replace("-", "")), send);
 					}
 				}
+			} else {
+				mess.toPlayer(p, "Falscher Syntak", Messages.IMPORTANT);
 			}
 
 		} else {
 			noPermission(p);
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private void list(String[] args, Player p) {
 		if (p.hasPermission("signs.smod")) {
@@ -438,6 +440,8 @@ public class Main extends JavaPlugin {
 						mess.toPlayerStaged(p, mastered, Integer.parseInt(args[2].replace("-", "")), send);
 					}
 				}
+			} else {
+				mess.toPlayer(p, "Falscher Syntak", Messages.IMPORTANT);
 			}
 
 		} else {
