@@ -72,6 +72,7 @@ public class Messages {
 	}
 
 	public void toPlayerStaged(Player p, List<String> s, int count, String befehl) {
+		if(count <= 0) count = 1;
 		int localInt = (count-1)*5;
 		for (int i = localInt; i <= (localInt + 4); i++) {
 			if (s.size() > i) {

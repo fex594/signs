@@ -99,85 +99,9 @@ public class Main extends JavaPlugin {
 							noPermission(p);
 						}
 					} else if (args[0].equalsIgnoreCase("list")) {
-						if (p.hasPermission("signs.smod")) {
-							if (args.length == 1) {
-								List<PlayerSign> list = CommandTransformer.getInstance().getAbgelaufen(null);
-								mess.toPlayer(p, "Abgelaufene Schilder:");
-								if (list.isEmpty()) {
-									mess.toPlayer(p, "Keine Schilder offen", Messages.NORMAL);
-								} else {
-									for (int z = 0; z < list.size(); z++) {
-										p.sendMessage("§6" + list.get(z));
-									}
-								}
-							} else {
-								List<PlayerSign> list = CommandTransformer.getInstance()
-										.getAbgelaufen(Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString());
-								mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
-								if (list.isEmpty()) {
-									mess.toPlayer(p, "Keine abgelaufenen Schilder");
-								} else {
-									for (int z = 0; z < list.size(); z++) {
-										mess.toPlayer(p, list.get(z).toString());
-									}
-								}
-							}
-						} else {
-							noPermission(p);
-						}
+						list(args, p);
 					} else if (args[0].equalsIgnoreCase("listActive")) {
-						if (p.hasPermission("signs.support")) {
-							if (args.length == 1) {
-								mess.toPlayer(p, "Aktive Schilder: ");
-								List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
-								if (list.isEmpty()) {
-									mess.toPlayer(p, "Keine Schilder offen", Messages.NORMAL);
-								} else {
-									ArrayList<String> mastered = new ArrayList<>();
-									for(PlayerSign ps : list) {
-										mastered.add(ps.toString());
-									}
-									mess.toPlayerStaged(p, mastered, 1,"/signs listactive -");
-//									for (int z = 0; z < list.size(); z++) {
-//										p.sendMessage("§6" + list.get(z));
-//									}
-								}
-							} else if(args.length == 2){
-								if(args[1].startsWith("-")) {
-									mess.toPlayer(p, "Aktive Schilder");
-									List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
-									ArrayList<String> mastered = new ArrayList<>();
-									for(PlayerSign ps : list) {
-										mastered.add(ps.toString());
-									}
-									mess.toPlayerStaged(p, mastered, Integer.parseInt(args[1].replace("-", "")),"/signs listActive -");
-								}
-								else {
-								mess.toPlayer(p, "Aktive Schilder von " + args[1]);
-								List<PlayerSign> list = CommandTransformer.getInstance().getActive(
-										Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
-								if (list.isEmpty()) {
-									mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine offenen Schilder");
-								} else {
-									for (int z = 0; z < list.size(); z++) {
-										mess.toPlayer(p, list.get(z).toString());
-									}
-								}}
-							}
-							else if(args.length==3) {
-								if(args[2].startsWith("-")) {
-									List<PlayerSign> list = CommandTransformer.getInstance().getActive(
-											Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
-									ArrayList<String> mastered = new ArrayList<>();
-									for(PlayerSign ps : list) {
-										mastered.add(ps.toString());
-									}
-									mess.toPlayerStaged(p, mastered, Integer.parseInt(args[2].replace("-", "")),"/signs listactive -");
-								}
-							}
-						} else {
-							noPermission(p);
-						}
+						listActive(args, p);
 					} else if (args[0].equalsIgnoreCase("info")) {
 						if (p.hasPermission("signs.user")) {
 							if (args.length == 1) {
@@ -317,14 +241,14 @@ public class Main extends JavaPlugin {
 						} else {
 							noPermission(p);
 						}
-					}else if(args[0].equalsIgnoreCase("removeall")) {
-						if(p.hasPermission("signs.admin")) {
+					} else if (args[0].equalsIgnoreCase("removeall")) {
+						if (p.hasPermission("signs.admin")) {
 							mess.toPlayer(p, "Nur über die Konsole möglich!", Messages.IMPORTANT);
-						}else {
+						} else {
 							noPermission(p);
 						}
 					}
-					
+
 					else {
 
 						mess.toPlayer(p, "Unbekannter Sub-Befehl", Messages.IMPORTANT);
@@ -383,6 +307,142 @@ public class Main extends JavaPlugin {
 
 	private void noPermission(Player p) {
 		mess.toPlayer(p, "Keine Permission", Messages.IMPORTANT);
+	}
+
+	@SuppressWarnings("deprecation")
+	private void listActive(String[] args, Player p) {
+		if (p.hasPermission("signs.smod")) {
+
+			if (args.length == 1) {
+				mess.toPlayer(p, "Aktive Schilder: ");
+				List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
+				if (list.isEmpty()) {
+					mess.toPlayer(p, "Keine Schilder offen", Messages.NORMAL);
+				} else {
+					ArrayList<String> mastered = new ArrayList<>();
+					for (PlayerSign ps : list) {
+						mastered.add(ps.toString());
+					}
+					mess.toPlayerStaged(p, mastered, 1, "/signs listactive -");
+				}
+			} else if (args.length == 2) {
+				if (args[1].startsWith("-")) {
+					mess.toPlayer(p, "Aktive Schilder");
+					List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
+					if (list.isEmpty()) {
+						mess.toPlayer(p, "Keine Schilder gefunden", Messages.NORMAL);
+					}
+					ArrayList<String> mastered = new ArrayList<>();
+					for (PlayerSign ps : list) {
+						mastered.add(ps.toString());
+					}
+					mess.toPlayerStaged(p, mastered, Integer.parseInt(args[1].replace("-", "")), "/signs listActive -");
+				} else if (args[1].equalsIgnoreCase("all")) {
+				} else {
+					mess.toPlayer(p, "Aktive Schilder von " + args[1]);
+					List<PlayerSign> list = CommandTransformer.getInstance()
+							.getActive(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
+					if (list.isEmpty()) {
+						mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine offenen Schilder");
+					} else {
+						ArrayList<String> mastered = new ArrayList<>();
+						for (PlayerSign ps : list) {
+							mastered.add(ps.toString());
+						}
+						String send = "/signs listActive " + args[1] + " -";
+						mess.toPlayerStaged(p, mastered, 1, send);
+					}
+				}
+			} else if (args.length == 3) {
+				if (args[1].equalsIgnoreCase("all")) {
+				} else if (args[2].startsWith("-")) {
+					mess.toPlayer(p, "Aktive Schilder von " + args[1]);
+					List<PlayerSign> list = CommandTransformer.getInstance()
+							.getActive(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
+					if (list.isEmpty()) {
+						mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine offenen Schilder");
+					} else {
+						ArrayList<String> mastered = new ArrayList<>();
+						for (PlayerSign ps : list) {
+							mastered.add(ps.toString());
+						}
+						String send = "/signs listActive " + args[1] + " -";
+						mess.toPlayerStaged(p, mastered, Integer.parseInt(args[2].replace("-", "")), send);
+					}
+				}
+			}
+
+		} else {
+			noPermission(p);
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void list(String[] args, Player p) {
+		if (p.hasPermission("signs.smod")) {
+
+			if (args.length == 1) {
+				mess.toPlayer(p, "Abgelaufene Schilder: ");
+				List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
+				if (list.isEmpty()) {
+					mess.toPlayer(p, "Keine Schilder abgelaufen", Messages.NORMAL);
+				} else {
+					ArrayList<String> mastered = new ArrayList<>();
+					for (PlayerSign ps : list) {
+						mastered.add(ps.toString());
+					}
+					mess.toPlayerStaged(p, mastered, 1, "/signs list -");
+				}
+			} else if (args.length == 2) {
+				if (args[1].startsWith("-")) {
+					mess.toPlayer(p, "Abgelaufene Schilder");
+					List<PlayerSign> list = CommandTransformer.getInstance().getActive(null);
+					if (list.isEmpty()) {
+						mess.toPlayer(p, "Keine Schilder gefunden", Messages.NORMAL);
+					}
+					ArrayList<String> mastered = new ArrayList<>();
+					for (PlayerSign ps : list) {
+						mastered.add(ps.toString());
+					}
+					mess.toPlayerStaged(p, mastered, Integer.parseInt(args[1].replace("-", "")), "/signs list -");
+				} else if (args[1].equalsIgnoreCase("all")) {
+				} else {
+					mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
+					List<PlayerSign> list = CommandTransformer.getInstance()
+							.getActive(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
+					if (list.isEmpty()) {
+						mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine abgelaufene Schilder");
+					} else {
+						ArrayList<String> mastered = new ArrayList<>();
+						for (PlayerSign ps : list) {
+							mastered.add(ps.toString());
+						}
+						String send = "/signs list " + args[1] + " -";
+						mess.toPlayerStaged(p, mastered, 1, send);
+					}
+				}
+			} else if (args.length == 3) {
+				if (args[1].equalsIgnoreCase("all")) {
+				} else if (args[2].startsWith("-")) {
+					mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
+					List<PlayerSign> list = CommandTransformer.getInstance()
+							.getActive(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
+					if (list.isEmpty()) {
+						mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine abgelaufene Schilder");
+					} else {
+						ArrayList<String> mastered = new ArrayList<>();
+						for (PlayerSign ps : list) {
+							mastered.add(ps.toString());
+						}
+						String send = "/signs list " + args[1] + " -";
+						mess.toPlayerStaged(p, mastered, Integer.parseInt(args[2].replace("-", "")), send);
+					}
+				}
+			}
+
+		} else {
+			noPermission(p);
+		}
 	}
 
 	private void hilfe(Player p) {
