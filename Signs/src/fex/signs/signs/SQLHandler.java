@@ -106,6 +106,28 @@ public class SQLHandler {
 		}
 	}
 	
+	// Liefert alle aktiven Schilder zurück
+	public List<PlayerSign> getInactiveSigns() {
+		openConnection(); // Datenbankverbindung öffnen
+		
+		String sts = "SELECT *  FROM Schilder WHERE Active = 0";
+		try {
+			Statement stm = connection.createStatement();
+			ResultSet set = stm.executeQuery(sts);
+			ArrayList<PlayerSign> inactive = new ArrayList<>();
+			while (set.next()) {
+				PlayerSign ps = PSConverter.convert(set); // Neue PlayerSign aus Daten de aktuellen Datenbankeintrags
+				inactive.add(ps);
+			}
+			
+			closeConnection();
+			return inactive;
+		} catch (SQLException e) {
+			System.out.println("Fehler getActiveSigns");
+			return null;
+		}
+	}
+	
 	public PlayerSign getSign(int ID) throws NoSignFoundException {
 		openConnection();
 		

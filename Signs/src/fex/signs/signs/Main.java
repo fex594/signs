@@ -25,13 +25,14 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onEnable() {
 
-		//Auto-Update + First Init
+		CommandTransformer.getInstance();
+		// Auto-Update + First Init
 		mess = Messages.getInstance();
 		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
 			public void run() {
 				CommandTransformer.getInstance().update();
 			}
-		}, 20*60*30L, 20 * 60 * 60L);// 20*60*60L = 60 Minuten
+		}, 20 * 60 * 30L, 20 * 60 * 60L);// 20*60*60L = 60 Minuten
 
 		getServer().getPluginManager().registerEvents(new SignChangeListener(), this);
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
@@ -336,7 +337,6 @@ public class Main extends JavaPlugin {
 						mastered.add(ps.toString());
 					}
 					mess.toPlayerStaged(p, mastered, Integer.parseInt(args[1].replace("-", "")), "/signs listActive -");
-				} else if (args[1].equalsIgnoreCase("all")) {
 				} else {
 					mess.toPlayer(p, "Aktive Schilder von " + args[1]);
 					List<PlayerSign> list = CommandTransformer.getInstance()
@@ -353,8 +353,7 @@ public class Main extends JavaPlugin {
 					}
 				}
 			} else if (args.length == 3) {
-				if (args[1].equalsIgnoreCase("all")) {
-				} else if (args[2].startsWith("-")) {
+				if (args[2].startsWith("-")) {
 					mess.toPlayer(p, "Aktive Schilder von " + args[1]);
 					List<PlayerSign> list = CommandTransformer.getInstance()
 							.getActive(Bukkit.getServer().getOfflinePlayer(args[1]).getUniqueId().toString());
@@ -407,6 +406,19 @@ public class Main extends JavaPlugin {
 					}
 					mess.toPlayerStaged(p, mastered, Integer.parseInt(args[1].replace("-", "")), "/signs list -");
 				} else if (args[1].equalsIgnoreCase("all")) {
+
+					mess.toPlayer(p, "Inaktive Schilder");
+					List<PlayerSign> list = CommandTransformer.getInstance().getInactive(null);
+					if (list.isEmpty()) {
+						mess.toPlayer(p, "Keine Schilder inaktiv");
+					} else {
+						ArrayList<String> mastered = new ArrayList<>();
+						for (PlayerSign ps : list) {
+							mastered.add(ps.toString());
+						}
+						String send = "/signs list all -";
+						mess.toPlayerStaged(p, mastered, 1, send);
+					}
 				} else {
 					mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
 					List<PlayerSign> list = CommandTransformer.getInstance()
@@ -424,6 +436,34 @@ public class Main extends JavaPlugin {
 				}
 			} else if (args.length == 3) {
 				if (args[1].equalsIgnoreCase("all")) {
+					if (args[2].startsWith("-")) {
+						mess.toPlayer(p, "Inaktive Schilder");
+						List<PlayerSign> list = CommandTransformer.getInstance().getInactive(null);
+						if (list.isEmpty()) {
+							mess.toPlayer(p, "Keine Schilder inaktiv");
+						} else {
+							ArrayList<String> mastered = new ArrayList<>();
+							for (PlayerSign ps : list) {
+								mastered.add(ps.toString());
+							}
+							String send = "/signs list all -";
+							mess.toPlayerStaged(p, mastered, Integer.parseInt(args[2].replace("-", "")), send);
+						}
+					} else {
+						mess.toPlayer(p, "Inaktive Schilder von " + args[2] + ": ");
+						List<PlayerSign> list = CommandTransformer.getInstance()
+								.getInactive(Bukkit.getServer().getOfflinePlayer(args[2]).getUniqueId().toString());
+						if (list.isEmpty()) {
+							mess.toPlayer(p, "Keine Schilder inaktiv");
+						} else {
+							ArrayList<String> mastered = new ArrayList<>();
+							for (PlayerSign ps : list) {
+								mastered.add(ps.toString());
+							}
+							String send = "/signs list all " + args[2] + " -";
+							mess.toPlayerStaged(p, mastered, 1, send);
+						}
+					}
 				} else if (args[2].startsWith("-")) {
 					mess.toPlayer(p, "Abgelaufene Schilder von " + args[1]);
 					List<PlayerSign> list = CommandTransformer.getInstance()
@@ -439,6 +479,21 @@ public class Main extends JavaPlugin {
 						mess.toPlayerStaged(p, mastered, Integer.parseInt(args[2].replace("-", "")), send);
 					}
 				}
+			} else if (args.length == 4) {
+				mess.toPlayer(p, "Inaktive Schilder von " + args[2] + ":");
+				List<PlayerSign> list = CommandTransformer.getInstance()
+						.getInactive(Bukkit.getServer().getOfflinePlayer(args[2]).getUniqueId().toString());
+				if (list.isEmpty()) {
+					mess.toPlayer(p, "Der Spieler " + args[1] + " hat keine offenen Schilder");
+				} else {
+					ArrayList<String> mastered = new ArrayList<>();
+					for (PlayerSign ps : list) {
+						mastered.add(ps.toString());
+					}
+					String send = "/signs listActive " + args[1] + " -";
+					mess.toPlayerStaged(p, mastered, Integer.parseInt(args[3].replace("-", "")), send);
+				}
+
 			} else {
 				mess.toPlayer(p, "Falscher Syntak", Messages.IMPORTANT);
 			}

@@ -17,6 +17,7 @@ public class CommandTransformer {
 
 	private List<PlayerSign> active;
 	private List<PlayerSign> abgelaufen;
+	private List<PlayerSign> inactive;
 	private int maxID;
 	private Messages mess = Messages.getInstance();
 	private static CommandTransformer instance;
@@ -66,6 +67,21 @@ public class CommandTransformer {
 			return pAbgelaufen;
 		}
 	}
+	
+	
+	public List<PlayerSign> getInactive(String name) {
+		if (name == null) {
+			return inactive;
+		} else {
+			List<PlayerSign> pInactive = new ArrayList<PlayerSign>();
+			for (PlayerSign ps : inactive) {
+				if (ps.getBesitzerUUID().equals(name)) {
+					pInactive.add(ps);
+				}
+			}
+			return pInactive;
+		}
+	}
 
 	/**
 	 * Infos über aktives Schild, Kennung über ID
@@ -104,6 +120,7 @@ public class CommandTransformer {
 		String args = "UPDATE Schilder SET Active=0 WHERE ID=" + ID;
 		boolean result = SQLHandler.getInstance().sendStatement(args);
 		update();
+		
 		return result;
 
 	}
@@ -127,6 +144,8 @@ public class CommandTransformer {
 						}
 
 					maxID = handle.getMaxID(); // Update MaxID
+					
+					inactive = handle.getInactiveSigns();
 
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -149,11 +168,11 @@ public class CommandTransformer {
 	}
 
 	public java.sql.Date getDate(int ID) {
-		return getSignOutOfList(ID).getAblaufDatum();
+		return getSignOutOfList(ID,active).getAblaufDatum();
 	}
 
 	public String setDate(int ID, int days, boolean override) {
-		PlayerSign p = getSignOutOfList(ID);
+		PlayerSign p = getSignOutOfList(ID,active);
 		java.sql.Date d = new java.sql.Date(CommandTransformer.getInstance().getDate(ID).getTime());
 		Calendar c = Calendar.getInstance();
 		c.setTime(p.getAblaufDatum());
@@ -193,9 +212,9 @@ public class CommandTransformer {
 		return s;
 	}
 
-	public PlayerSign getSignOutOfList(int ID) {
+	public PlayerSign getSignOutOfList(int ID, List<PlayerSign> list) {
 		PlayerSign p = null;
-		for (PlayerSign ps : active) {
+		for (PlayerSign ps : list) {
 			if (ps.getID() == ID) {
 				p = ps;
 				break;
