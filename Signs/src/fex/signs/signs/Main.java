@@ -261,46 +261,46 @@ public class Main extends JavaPlugin {
 			} else {
 				return false;
 			}
-		} else if (args[0].equalsIgnoreCase("removeall")) {
-			if (args.length <= 1) {
-				mess.toConsole("Gebe einen Namen ein!");
-			} else {
-				String uuid = Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString();
-				try {
-					List<String> liste = CommandTransformer.getInstance().deleteAllSigns(uuid);
-					for (int count = 0; count < liste.size(); count++) {
-						String location = liste.get(count);
-						try {
-							location = location.replace("(", "").replace(")", "");
-							String world = location.substring(0, location.indexOf(":")).replace(":", "");
-							double erster = Integer
-									.parseInt(location.substring(location.indexOf(":"), location.indexOf("/"))
-											.replace(":", "").replace("/", ""));
-							double zweiter = Integer.parseInt(location
-									.substring(location.indexOf("/"), location.lastIndexOf("/")).replace("/", ""));
-							double dritter = Integer
-									.parseInt(location.substring(location.lastIndexOf("/")).replace("/", ""));
-							Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter, dritter);
-							if (Util.isSign(l)) {
-								l.getBlock().setType(Material.AIR);
+		} else {
+			if (args.length > 0 && args[0].equalsIgnoreCase("removeall")) {
+				if (args.length <= 1) {
+					mess.toConsole("Gebe einen Namen ein!");
+				} else {
+					String uuid = Bukkit.getOfflinePlayer(args[1]).getUniqueId().toString();
+					try {
+						List<String> liste = CommandTransformer.getInstance().deleteAllSigns(uuid);
+						for (int count = 0; count < liste.size(); count++) {
+							String location = liste.get(count);
+							try {
+								location = location.replace("(", "").replace(")", "");
+								String world = location.substring(0, location.indexOf(":")).replace(":", "");
+								double erster = Integer
+										.parseInt(location.substring(location.indexOf(":"), location.indexOf("/"))
+												.replace(":", "").replace("/", ""));
+								double zweiter = Integer.parseInt(location
+										.substring(location.indexOf("/"), location.lastIndexOf("/")).replace("/", ""));
+								double dritter = Integer
+										.parseInt(location.substring(location.lastIndexOf("/")).replace("/", ""));
+								Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter, dritter);
+								if (Util.isSign(l)) {
+									l.getBlock().setType(Material.AIR);
+								}
+							} catch (NumberFormatException e) {
+								mess.toConsole("Keine Zahl");
+							} catch (StringIndexOutOfBoundsException ex) {
+								mess.toConsole("Kein Schild gefunden");
 							}
-						} catch (NumberFormatException e) {
-							mess.toConsole("Keine Zahl");
-						} catch (StringIndexOutOfBoundsException ex) {
-							mess.toConsole("Kein Schild gefunden");
 						}
+						mess.toConsole("Alle Schilder von §2" + args[1] + "§6 wurden §2erfolgreich §6entfernt!");
+					} catch (Exception e) {
+						mess.toConsole("Fehler beim Ausführen des Befehls");
+						e.printStackTrace();
 					}
-					mess.toConsole("Alle Schilder von §2" + args[1] + "§6 wurden §2erfolgreich §6entfernt!");
-				} catch (Exception e) {
-					mess.toConsole("Fehler beim Ausführen des Befehls");
-					e.printStackTrace();
 				}
+
+			} else {
+				mess.toConsole("Dieser Befehl ist nur als Spieler ausführbar");
 			}
-
-		}
-
-		else {
-			mess.toConsole("Dieser Befehl ist nur als Spieler ausführbar");
 		}
 		return true;
 	}
