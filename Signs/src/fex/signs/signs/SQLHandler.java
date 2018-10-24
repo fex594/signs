@@ -194,7 +194,6 @@ public class SQLHandler {
 	
 	public boolean sendStatement(String args) {
 		boolean success = false;
-		
 		openConnection();
 		
 		try {

@@ -67,8 +67,7 @@ public class CommandTransformer {
 			return pAbgelaufen;
 		}
 	}
-	
-	
+
 	public List<PlayerSign> getInactive(String name) {
 		if (name == null) {
 			return inactive;
@@ -120,7 +119,7 @@ public class CommandTransformer {
 		String args = "UPDATE Schilder SET Active=0 WHERE ID=" + ID;
 		boolean result = SQLHandler.getInstance().sendStatement(args);
 		update();
-		
+
 		return result;
 
 	}
@@ -130,10 +129,10 @@ public class CommandTransformer {
 
 			@Override
 			public void run() {
-//				for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-//					p.sendMessage("Update Gestartet");
-//				}
-//				System.out.println("Update gestartet");
+				// for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+				// p.sendMessage("Update Gestartet");
+				// }
+				// System.out.println("Update gestartet");
 				try {
 					SQLHandler handle = SQLHandler.getInstance();
 					active = handle.update(); // Update aktive Schilder
@@ -144,23 +143,24 @@ public class CommandTransformer {
 						}
 
 					maxID = handle.getMaxID(); // Update MaxID
-					
+
 					inactive = handle.getInactiveSigns();
 
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-//				for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-//					p.sendMessage("Update Beendet");
-//				}
-//				System.out.println("Update beendet");
+				// for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+				// p.sendMessage("Update Beendet");
+				// }
+				// System.out.println("Update beendet");
 			}
-			
+
 		});
 
 	}
 
 	public boolean commentSign(int ID, String text) {
+
 		String output = "UPDATE Schilder SET Text = '" + text + "' WHERE ID = " + ID;
 		boolean x = SQLHandler.getInstance().sendStatement(output);
 		update();
@@ -168,11 +168,11 @@ public class CommandTransformer {
 	}
 
 	public java.sql.Date getDate(int ID) {
-		return getSignOutOfList(ID,active).getAblaufDatum();
+		return getSignOutOfList(ID, active).getAblaufDatum();
 	}
 
 	public String setDate(int ID, int days, boolean override) {
-		PlayerSign p = getSignOutOfList(ID,active);
+		PlayerSign p = getSignOutOfList(ID, active);
 		java.sql.Date d = new java.sql.Date(CommandTransformer.getInstance().getDate(ID).getTime());
 		Calendar c = Calendar.getInstance();
 		c.setTime(p.getAblaufDatum());
