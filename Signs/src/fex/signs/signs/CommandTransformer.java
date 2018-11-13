@@ -7,9 +7,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import fex.signs.util.Messages;
+import fex.signs.util.NoSignFoundException;
 import fex.signs.util.PlayerSign;
 import fex.signs.util.Util;
 
@@ -167,17 +169,26 @@ public class CommandTransformer {
 		return x;
 	}
 
-	public java.sql.Date getDate(int ID) {
-		return getSignOutOfList(ID, active).getAblaufDatum();
+	public java.sql.Date getDate(int ID) throws NoSignFoundException {
+		java.sql.Date date = getSignOutOfList(ID, active).getAblaufDatum();
+		if (date != null)
+			return date;
+		else {
+			throw new NoSignFoundException("Schild ist nicht aktiv");
+		}
 	}
 
 	public String setDate(int ID, int days, boolean override) {
 		PlayerSign p = getSignOutOfList(ID, active);
-		java.sql.Date d = new java.sql.Date(CommandTransformer.getInstance().getDate(ID).getTime());
+		if (p == null) {
+			return ChatColor.RED + "Schild ist nicht mehr aktiv";
+		}
+		// java.sql.Date d = new
+		// java.sql.Date(CommandTransformer.getInstance().getDate(ID).getTime());
 		Calendar c = Calendar.getInstance();
 		c.setTime(p.getAblaufDatum());
 		c.add(Calendar.DAY_OF_MONTH, days);
-		d = new java.sql.Date(c.getTimeInMillis());
+		java.sql.Date d = new java.sql.Date(c.getTimeInMillis());
 
 		boolean finished = false;
 		if (d.before(p.getMaxExpandDate()) || override) {
