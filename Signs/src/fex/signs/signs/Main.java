@@ -109,7 +109,11 @@ public class Main extends JavaPlugin {
 							} else {
 								try {
 									int id = Integer.parseInt(args[1]);
+									if(id<=0) {
+										mess.toPlayer(p, "Ungültige ID", Messages.IMPORTANT);
+									}else {
 									CommandTransformer.getInstance().getInfo(id, p);
+									}
 								} catch (NumberFormatException e) {
 									mess.toPlayer(p, args[1] + " ist keine Zahl!", Messages.IMPORTANT);
 								}
