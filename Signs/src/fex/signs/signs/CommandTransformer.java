@@ -145,7 +145,8 @@ public class CommandTransformer {
 						}
 
 					maxID = handle.getMaxID(); // Update MaxID
-
+					if (maxID == 0)
+						maxID = 1;
 					inactive = handle.getInactiveSigns();
 
 				} catch (SQLException e) {
@@ -253,6 +254,11 @@ public class CommandTransformer {
 	 */
 	public int putNewSign(String name, Date date, int active, String loc, String typ, String ersteller, Date lastDate) {
 		String type = typ.replace("[", "").replace("]", "");
+		// String st = "INSERT INTO Schilder (ID, Player, Active, Loc, Datum, Typ,
+		// Ersteller, Lastdate) VALUES (" + maxID
+		// + ", " + "'" + name + "', " + active + ", '" + loc + "', '" + date + "', '" +
+		// type + "', '" + ersteller
+		// + "', '" + lastDate + "')";
 		String st = "INSERT INTO Schilder (Player, Active, Loc, Datum, Typ, Ersteller, Lastdate) VALUES ('" + name
 				+ "', " + active + ", '" + loc + "', '" + date + "', '" + type + "', '" + ersteller + "', '" + lastDate
 				+ "')";

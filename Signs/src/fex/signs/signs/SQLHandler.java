@@ -78,6 +78,7 @@ public class SQLHandler {
 	 */
 	private void setupTable() {
 		try {
+//			String string = "CREATE TABLE IF NOT EXISTS Schilder (DBID int AUTO_INCREMENT NOT NULL PRIMARY KEY,ID int NOT NULL, Player VARCHAR(36) NOT NULL, Active int(1) NOT NULL, Text VARCHAR(255), Loc VARCHAR(60) NOT NULL, Datum Date NOT NULL, Typ VARCHAR(25) NOT NULL, Ersteller VARCHAR(36) NOT NULL, Lastdate DATE NOT NULL)";
 			String string = "CREATE TABLE IF NOT EXISTS Schilder (ID int AUTO_INCREMENT NOT NULL PRIMARY KEY, Player VARCHAR(36) NOT NULL, Active int(1) NOT NULL, Text VARCHAR(255), Loc VARCHAR(60) NOT NULL, Datum Date NOT NULL, Typ VARCHAR(25) NOT NULL, Ersteller VARCHAR(36) NOT NULL, Lastdate DATE NOT NULL)";
 			PreparedStatement sql = connection.prepareStatement(string);
 			sql.executeUpdate();
@@ -161,7 +162,7 @@ public class SQLHandler {
 			System.out.println("Fehler getMaxID");
 			e.printStackTrace();
 		}
-		return returned;
+		return returned + 1;
 
 	}
 
