@@ -104,7 +104,11 @@ public class CommandTransformer {
 			if (ps == null) {
 				ps = SQLHandler.getInstance().sendResultStatements("SELECT * FROM Schilder WHERE ID = " + ID).get(0);
 			}
+			if(p.hasPermission("signs.support") || p.getUniqueId().toString().equals(ps.getBesitzerUUID())) {
 			mess.toPlayer(p, ps.toString(), Messages.NORMAL);
+			}else {
+				mess.toPlayer(p, ps.toUserString(), Messages.NORMAL);
+			}
 		}
 	}
 
