@@ -109,10 +109,10 @@ public class Main extends JavaPlugin {
 							} else {
 								try {
 									int id = Integer.parseInt(args[1]);
-									if(id<=0) {
+									if (id <= 0) {
 										mess.toPlayer(p, "Ungültige ID", Messages.IMPORTANT);
-									}else {
-									CommandTransformer.getInstance().getInfo(id, p);
+									} else {
+										CommandTransformer.getInstance().getInfo(id, p);
 									}
 								} catch (NumberFormatException e) {
 									mess.toPlayer(p, args[1] + " ist keine Zahl!", Messages.IMPORTANT);
@@ -131,10 +131,18 @@ public class Main extends JavaPlugin {
 									s = s + args[z] + " ";
 								}
 								s = s + args[args.length - 1];
-								if (CommandTransformer.getInstance().commentSign(Integer.parseInt(args[1]), s)) {
-									mess.toPlayer(p, "Schild erfolgreich aktualisiert", Messages.NORMAL);
-								} else {
-									mess.toPlayer(p, "Fehler beim Aktualisieren des Schildes", Messages.IMPORTANT);
+								int id = -1;
+								try {
+									id = Integer.parseInt(args[1]);
+								} catch (NumberFormatException e) {
+									mess.toPlayer(p, args[1] + " ist keine Zahl", Messages.IMPORTANT);
+								}
+								if (id != -1) {
+									if (CommandTransformer.getInstance().commentSign(id, s)) {
+										mess.toPlayer(p, "Schild erfolgreich aktualisiert", Messages.NORMAL);
+									} else {
+										mess.toPlayer(p, "Fehler beim Aktualisieren des Schildes", Messages.IMPORTANT);
+									}
 								}
 							}
 						} else {
