@@ -315,7 +315,7 @@ public class Main extends JavaPlugin {
 
 	@SuppressWarnings("deprecation")
 	private void listActive(String[] args, Player p) {
-		if (p.hasPermission("signs.smod")) {
+		if (p.hasPermission("signs.support")) {
 
 			if (args.length == 1) {
 				mess.toPlayer(p, "Aktive Schilder: ");
