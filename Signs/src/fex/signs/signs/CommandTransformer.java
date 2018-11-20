@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import fex.signs.util.Messages;
@@ -294,5 +296,56 @@ public class CommandTransformer {
 		}
 		SQLHandler.getInstance().sendStatement("UPDATE Schilder SET Active = 0 WHERE Player = '" + s + "'");
 		return list;
+	}
+
+	/**
+	 * Returns a List with active Signs of UserUUID user
+	 * @param user UUID of called User
+	 * @return ResultList, can be null
+	 */
+	public List<PlayerSign> getUserActive(String user) {
+		List<PlayerSign> result = new ArrayList<PlayerSign>();
+		for(PlayerSign ps : active) {
+			if(ps.getBesitzerUUID().equals(user)) {
+				result.add(ps);
+			}
+		}
+		return result;
+	}
+	
+	public List<PlayerSign> getCorruptedSigns(){
+		List<PlayerSign> result = new ArrayList<>();
+		for(PlayerSign ps : active) {
+			if(!checkSignLocation(ps))
+				result.add(ps);
+		}
+		return result;
+	}
+	
+	/**
+	 * Returns true if Block at Sign's position is a sign or a wallsign
+	 * @param sign
+	 * @return
+	 */
+	private boolean checkSignLocation(PlayerSign sign) {
+		String location = sign.getLocation();
+		location = location.replace("(", "").replace(")", "");
+		String world = location.substring(0, location.indexOf(":")).replace(":", "");
+		double erster = Integer.parseInt(
+				location.substring(location.indexOf(":"), location.indexOf("/"))
+						.replace(":", "").replace("/", ""))
+				+ 0.5;
+		double zweiter = Integer.parseInt(
+				location.substring(location.indexOf("/"), location.lastIndexOf("/"))
+						.replace("/", ""));
+		double dritter = Integer.parseInt(
+				location.substring(location.lastIndexOf("/")).replace("/", "")) + 0.5;
+		Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter,
+				dritter);
+		if(l.getBlock().getType()==Material.SIGN||l.getBlock().getType()==Material.WALL_SIGN) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 }

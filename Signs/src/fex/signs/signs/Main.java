@@ -43,12 +43,30 @@ public class Main extends JavaPlugin {
 		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
 			public void run() {
 				getAbgelaufene();
+				getBrokenSigns();
 			}
 		}, 20 * 20L, 20 * 600L);// 20*600L = 10 Minuten
 
 		// Lokale Schilder Auto-Update
 		mess.toConsole("Plugin gestartet");
 
+	}
+	
+	public void getBrokenSigns() {
+		List<PlayerSign> result = CommandTransformer.getInstance().getCorruptedSigns();
+		if(result!=null) {
+			int anzahl = result.size();
+			String corrupt = "Defekte Schilder: ";
+			for(PlayerSign ps : result) {
+				corrupt += "#"+ps.getID()+", ";
+			}
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				if (p.hasPermission("signs.smod")) {
+					mess.toPlayer(p, "Es sind "+anzahl+"Schilder kaputt", Messages.IMPORTANT);
+					mess.toPlayer(p, corrupt, Messages.IMPORTANT);
+				}
+			}
+		}
 	}
 
 	public void getAbgelaufene() {
@@ -510,7 +528,19 @@ public class Main extends JavaPlugin {
 				mess.toPlayer(p, "Falscher Syntak", Messages.IMPORTANT);
 			}
 
-		} else {
+		}else if(p.hasPermission("signs.user")&&!p.hasPermission("signs.support")) {
+			List<PlayerSign> list = CommandTransformer.getInstance().getUserActive(p.getUniqueId().toString());
+			if(list==null) {
+				mess.toPlayer(p, "Keine Schilder offen");
+			}
+			else {
+				mess.toPlayer(p, "Deine offenen Schilder:");
+				for(PlayerSign ps : list) {
+					mess.toPlayer(p, ps.toString());
+				}
+			}
+		}
+		else {
 			noPermission(p);
 		}
 	}
@@ -520,6 +550,7 @@ public class Main extends JavaPlugin {
 			mess.toPlayer(p, "§2--- §6Befehlsliste §2---");
 			mess.toPlayer(p, "/signs help §7- Zeigt die Befehlsliste an");
 			mess.toPlayer(p, "/signs info §8[id] §7- Gibt Infos über ein Schild");
+			mess.toPlayer(p, "/signs list §7- Listet dir deine aktiven Schilder auf");
 			if (p.hasPermission("signs.support")) {
 				mess.toPlayer(p, "§2--- §6Support-Befehle §2---");
 				mess.toPlayer(p, "/signs getSign §7- Gibt ein Schild");

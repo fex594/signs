@@ -29,5 +29,8 @@ public class PlayerJoinListener extends MyListener implements Listener{
 		else if(x > 1){
 			mess.toPlayer(e.getPlayer(), "Du hast " + x + " offene Schilder", Messages.IMPORTANT);
 		}
+		if(x>=1) {
+			mess.toPlayer(e.getPlayer(), "Nutze /signs list", Messages.IMPORTANT);
+		}
 	}
 }
