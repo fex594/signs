@@ -3,6 +3,7 @@ package fex.signs.listeners;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
@@ -17,7 +18,7 @@ public class BlockBreakListener extends MyListener implements Listener {
 	 * 
 	 * @param e
 	 */
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOW)
 	public void onBlockBreak(BlockBreakEvent e) {
 		if (isSign(e)) {
 			Sign s = (Sign) e.getBlock().getState();
