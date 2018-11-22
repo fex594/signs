@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -54,15 +55,18 @@ public class Main extends JavaPlugin {
 	
 	public void getBrokenSigns() {
 		List<PlayerSign> result = CommandTransformer.getInstance().getCorruptedSigns();
-		if(result!=null) {
-			int anzahl = result.size();
-			String corrupt = "Defekte Schilder: ";
+		int anzahl = result.size();
+		if(anzahl>0) {
+			String corrupt = "Defekte Schilder: "+ChatColor.GREEN;
 			for(PlayerSign ps : result) {
 				corrupt += "#"+ps.getID()+", ";
 			}
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				if (p.hasPermission("signs.smod")) {
-					mess.toPlayer(p, "Es sind "+anzahl+"Schilder kaputt", Messages.IMPORTANT);
+					if(anzahl==1)
+						mess.toPlayer(p, "Es ist 1 Schild kaputt", Messages.IMPORTANT);
+					else
+					mess.toPlayer(p, "Es sind "+anzahl+" Schilder kaputt", Messages.IMPORTANT);
 					mess.toPlayer(p, corrupt, Messages.IMPORTANT);
 				}
 			}
@@ -550,6 +554,7 @@ public class Main extends JavaPlugin {
 			mess.toPlayer(p, "§2--- §6Befehlsliste §2---");
 			mess.toPlayer(p, "/signs help §7- Zeigt die Befehlsliste an");
 			mess.toPlayer(p, "/signs info §8[id] §7- Gibt Infos über ein Schild");
+			if(!p.hasPermission("signs.support"))
 			mess.toPlayer(p, "/signs list §7- Listet dir deine aktiven Schilder auf");
 			if (p.hasPermission("signs.support")) {
 				mess.toPlayer(p, "§2--- §6Support-Befehle §2---");
