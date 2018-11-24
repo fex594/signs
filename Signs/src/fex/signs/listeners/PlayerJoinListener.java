@@ -19,7 +19,7 @@ public class PlayerJoinListener extends MyListener implements Listener{
 	 * Wird getriggert, sobald ein User joined
 	 * @param e
 	 */
-	@EventHandler
+	@EventHandler(priority =. Low) 
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		List<PlayerSign> list = CommandTransformer.getInstance().getActive(e.getPlayer().getUniqueId().toString());
 		int x = list.size();
