@@ -21,7 +21,7 @@ import fex.signs.util.Util;
 
 public class Main extends JavaPlugin {
 	private Messages mess; // Nachrichtensystem an User und Konsole
-	private final String version = "1.1.1";
+	private final String version = "1.1.2";
 
 	@Override
 	public void onEnable() {
@@ -194,7 +194,7 @@ public class Main extends JavaPlugin {
 						} else {
 							noPermission(p);
 						}
-					} else if (args[0].equalsIgnoreCase("tp")) {
+					} else if (args[0].equalsIgnoreCase("tp")||args[0].equalsIgnoreCase("warp")) {
 						if (p.hasPermission("signs.support")) {
 							if (args.length == 1) {
 								mess.toPlayer(p, "Missing ID");
