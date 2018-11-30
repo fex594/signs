@@ -21,7 +21,7 @@ import fex.signs.util.Util;
 
 public class Main extends JavaPlugin {
 	private Messages mess; // Nachrichtensystem an User und Konsole
-	private final String version = "1.0";
+	private final String version = "1.1.1";
 
 	@Override
 	public void onEnable() {
@@ -37,7 +37,7 @@ public class Main extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(new SignChangeListener(), this);
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
-		getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+		getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
 		getServer().getPluginManager().registerEvents(new SignClickListener(), this);
 
 		// Zeitliches anzeigen der abgelaufenen Schilder
