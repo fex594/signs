@@ -197,20 +197,27 @@ public class CommandTransformer {
 		c.add(Calendar.DAY_OF_MONTH, days);
 		java.sql.Date d = new java.sql.Date(c.getTimeInMillis());
 
-		boolean finished = false;
+		int finished = 0;
 		if (d.before(p.getMaxExpandDate()) || override) {
 			p.setAblaufDatum(d);
-			finished = true;
+			finished = 2;
 
-		} else {
+		}else if(d.after(p.getMaxExpandDate())&&p.getAblaufDatum().before(p.getMaxExpandDate())){
+			finished = 1;
+			p.setAblaufDatum(p.getMaxExpandDate());
+		}
+		else {
 			p.setAblaufDatum(p.getMaxExpandDate());
 		}
 		String args = "UPDATE Schilder SET Datum = '" + p.getAblaufDatum() + "' WHERE ID=" + ID;
 		SQLHandler.getInstance().sendStatement(args);
 		update();
-		if (finished) {
+		if (finished==2) {
 			return "Schild erfolgreich um " + days + " Tage verlängert";
-		} else {
+		} else if(finished==1){
+			return "Schild bis maximale Zeit verlängert";
+		}
+		else {
 			return "Maximale Verlängerungszeit erreicht!";
 		}
 	}
