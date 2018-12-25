@@ -52,21 +52,21 @@ public class Main extends JavaPlugin {
 		mess.toConsole("Plugin gestartet");
 
 	}
-	
+
 	public void getBrokenSigns() {
 		List<PlayerSign> result = CommandTransformer.getInstance().getCorruptedSigns();
 		int anzahl = result.size();
-		if(anzahl>0) {
-			String corrupt = "Defekte Schilder: "+ChatColor.GREEN;
-			for(PlayerSign ps : result) {
-				corrupt += "#"+ps.getID()+", ";
+		if (anzahl > 0) {
+			String corrupt = "Defekte Schilder: " + ChatColor.GREEN;
+			for (PlayerSign ps : result) {
+				corrupt += "#" + ps.getID() + ", ";
 			}
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				if (p.hasPermission("signs.smod")) {
-					if(anzahl==1)
+					if (anzahl == 1)
 						mess.toPlayer(p, "Es ist 1 Schild kaputt", Messages.IMPORTANT);
 					else
-					mess.toPlayer(p, "Es sind "+anzahl+" Schilder kaputt", Messages.IMPORTANT);
+						mess.toPlayer(p, "Es sind " + anzahl + " Schilder kaputt", Messages.IMPORTANT);
 					mess.toPlayer(p, corrupt, Messages.IMPORTANT);
 				}
 			}
@@ -194,16 +194,20 @@ public class Main extends JavaPlugin {
 						} else {
 							noPermission(p);
 						}
-					} else if (args[0].equalsIgnoreCase("tp")||args[0].equalsIgnoreCase("warp")) {
+					} else if (args[0].equalsIgnoreCase("tp") || args[0].equalsIgnoreCase("warp")) {
 						if (p.hasPermission("signs.support")) {
 							if (args.length == 1) {
 								mess.toPlayer(p, "Missing ID");
 							} else {
 								try {
-									String location = CommandTransformer.getInstance()
-											.getLocation(Integer.parseInt(args[1]));
+									int id = Integer.parseInt(args[1]);
+									String location = CommandTransformer.getInstance().getLocation(id);
 									if (location == null) {
-										mess.toPlayer(p, "Schild existiert nicht mehr", Messages.IMPORTANT);
+										mess.toPlayer(p, "Schild ist bereits abgebaut", Messages.NORMAL);
+										location = CommandTransformer.getInstance().getLocationInaktive(id);
+									}
+									if (location == null) {
+										mess.toPlayer(p, "Schild nicht gefunden", Messages.IMPORTANT);
 									} else {
 										location = location.replace("(", "").replace(")", "");
 										String world = location.substring(0, location.indexOf(":")).replace(":", "");
@@ -532,19 +536,17 @@ public class Main extends JavaPlugin {
 				mess.toPlayer(p, "Falscher Syntak", Messages.IMPORTANT);
 			}
 
-		}else if(p.hasPermission("signs.user")&&!p.hasPermission("signs.support")) {
+		} else if (p.hasPermission("signs.user") && !p.hasPermission("signs.support")) {
 			List<PlayerSign> list = CommandTransformer.getInstance().getUserActive(p.getUniqueId().toString());
-			if(list==null) {
+			if (list == null) {
 				mess.toPlayer(p, "Keine Schilder offen");
-			}
-			else {
+			} else {
 				mess.toPlayer(p, "Deine offenen Schilder:");
-				for(PlayerSign ps : list) {
+				for (PlayerSign ps : list) {
 					mess.toPlayer(p, ps.toString());
 				}
 			}
-		}
-		else {
+		} else {
 			noPermission(p);
 		}
 	}
@@ -554,8 +556,8 @@ public class Main extends JavaPlugin {
 			mess.toPlayer(p, "§2--- §6Befehlsliste §2---");
 			mess.toPlayer(p, "/signs help §7- Zeigt die Befehlsliste an");
 			mess.toPlayer(p, "/signs info §8[id] §7- Gibt Infos über ein Schild");
-			if(!p.hasPermission("signs.support"))
-			mess.toPlayer(p, "/signs list §7- Listet dir deine aktiven Schilder auf");
+			if (!p.hasPermission("signs.support"))
+				mess.toPlayer(p, "/signs list §7- Listet dir deine aktiven Schilder auf");
 			if (p.hasPermission("signs.support")) {
 				mess.toPlayer(p, "§2--- §6Support-Befehle §2---");
 				mess.toPlayer(p, "/signs getSign §7- Gibt ein Schild");

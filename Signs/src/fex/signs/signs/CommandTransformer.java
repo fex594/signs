@@ -236,6 +236,16 @@ public class CommandTransformer {
 		}
 		return s;
 	}
+	public String getLocationInaktive(int ID) {
+		String s = null;
+		for (PlayerSign ps : inactive) {
+			if (ps.getID() == ID) {
+				s = ps.getLocation();
+				break;
+			}
+		}
+		return s;
+	}
 
 	public PlayerSign getSignOutOfList(int ID, List<PlayerSign> list) {
 		PlayerSign p = null;
