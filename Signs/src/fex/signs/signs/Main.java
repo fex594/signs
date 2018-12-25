@@ -220,9 +220,14 @@ public class Main extends JavaPlugin {
 														.replace("/", ""));
 										double dritter = Integer.parseInt(
 												location.substring(location.lastIndexOf("/")).replace("/", "")) + 0.5;
+										try {
 										Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter,
 												dritter);
+										
 										p.teleport(l);
+										}catch(IllegalArgumentException ex) {
+											mess.toPlayer(p, "Das Schild befindet sich in einer nicht existierenden Welt", Messages.ERROR);
+										}
 									}
 								} catch (NumberFormatException e) {
 									mess.toPlayer(p, "Keine Zahl", Messages.IMPORTANT);
