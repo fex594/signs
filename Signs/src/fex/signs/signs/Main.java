@@ -21,7 +21,7 @@ import fex.signs.util.Util;
 
 public class Main extends JavaPlugin {
 	private Messages mess; // Nachrichtensystem an User und Konsole
-	private final String version = "1.1.3";
+	private final String version = "1.1.4";
 
 	@Override
 	public void onEnable() {
@@ -122,22 +122,23 @@ public class Main extends JavaPlugin {
 						}
 					} else if (args[0].equalsIgnoreCase("list")) {
 						list(args, p);
-					} else if (args[0].equalsIgnoreCase("listActive")) {
+					} else if (args[0].equalsIgnoreCase("listActive") || args[0].equalsIgnoreCase("active")) {
 						listActive(args, p);
 					} else if (args[0].equalsIgnoreCase("info")) {
 						if (p.hasPermission("signs.user")) {
 							if (args.length == 1) {
 								mess.toPlayer(p, "Gebe eine ID an", Messages.IMPORTANT);
 							} else {
+								int id = -1;
 								try {
-									int id = Integer.parseInt(args[1]);
-									if (id <= 0) {
-										mess.toPlayer(p, "Ungültige ID", Messages.IMPORTANT);
-									} else {
-										CommandTransformer.getInstance().getInfo(id, p);
-									}
+									id = Integer.parseInt(args[1]);
 								} catch (NumberFormatException e) {
 									mess.toPlayer(p, args[1] + " ist keine Zahl!", Messages.IMPORTANT);
+								}
+								if (id <= 0) {
+									mess.toPlayer(p, "Ungültige ID", Messages.IMPORTANT);
+								} else {
+									CommandTransformer.getInstance().getInfo(id, p);
 								}
 							}
 						} else {
@@ -221,12 +222,14 @@ public class Main extends JavaPlugin {
 										double dritter = Integer.parseInt(
 												location.substring(location.lastIndexOf("/")).replace("/", "")) + 0.5;
 										try {
-										Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter,
-												dritter);
-										
-										p.teleport(l);
-										}catch(IllegalArgumentException ex) {
-											mess.toPlayer(p, "Das Schild befindet sich in einer nicht existierenden Welt", Messages.ERROR);
+											Location l = new Location(Bukkit.getServer().getWorld(world), erster,
+													zweiter, dritter);
+
+											p.teleport(l);
+										} catch (IllegalArgumentException ex) {
+											mess.toPlayer(p,
+													"Das Schild befindet sich in einer nicht existierenden Welt",
+													Messages.ERROR);
 										}
 									}
 								} catch (NumberFormatException e) {
