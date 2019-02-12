@@ -14,7 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fex.signs.listeners.*;
+import fex.signs.listeners.BlockBreakListener;
+import fex.signs.listeners.PlayerJoinListener;
+import fex.signs.listeners.SignChangeListener;
+import fex.signs.listeners.SignClickListener;
 import fex.signs.util.Messages;
 import fex.signs.util.PlayerSign;
 import fex.signs.util.Util;
@@ -49,6 +52,9 @@ public class Main extends JavaPlugin {
 		}, 20 * 20L, 20 * 600L);// 20*600L = 10 Minuten
 
 		// Lokale Schilder Auto-Update
+		
+//		Bukkit.getPluginCommand("signs").setExecutor(new SignsCommand());
+		Bukkit.getPluginCommand("signs").setTabCompleter(new SignsCommand());
 		mess.toConsole("Plugin gestartet");
 
 	}
@@ -95,6 +101,7 @@ public class Main extends JavaPlugin {
 		SQLHandler.getInstance().closeConnection();
 		mess.toConsole("Plugin gestoppt");
 	}
+	
 
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] args) {
