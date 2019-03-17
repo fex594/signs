@@ -36,7 +36,7 @@ public class SignsCommand implements TabCompleter{
 			for(String in : tab) {
 				if(in.startsWith(args[0])) {
 					temp.add(in);
-					System.out.println(in+" found");
+//					System.out.println(in+" found");
 				}
 			}
 			tab = temp;
@@ -65,11 +65,5 @@ public class SignsCommand implements TabCompleter{
 		
 		return tab;
 	}
-
-//	@Override
-//	public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
 
 }
