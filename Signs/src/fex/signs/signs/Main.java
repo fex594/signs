@@ -112,7 +112,7 @@ public class Main extends JavaPlugin {
 				if (args.length >= 1) {
 					if (args[0].equalsIgnoreCase("getSign")) {
 						if (p.hasPermission("signs.support")) {
-							ItemStack xSchild = new ItemStack(Material.SIGN);
+							ItemStack xSchild = new ItemStack(Material.OAK_SIGN);
 							ItemMeta meta = xSchild.getItemMeta();
 							meta.setDisplayName("§7Adminschild");
 							xSchild.setItemMeta(meta);

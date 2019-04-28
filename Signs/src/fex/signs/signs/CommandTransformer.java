@@ -9,7 +9,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import fex.signs.util.Messages;
@@ -359,10 +358,6 @@ public class CommandTransformer {
 				location.substring(location.lastIndexOf("/")).replace("/", "")) + 0.5;
 		Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter,
 				dritter);
-		if(l.getBlock().getType()==Material.SIGN||l.getBlock().getType()==Material.WALL_SIGN) {
-			return true;
-		}else {
-			return false;
-		}
+		return Util.isSign(l);
 	}
 }

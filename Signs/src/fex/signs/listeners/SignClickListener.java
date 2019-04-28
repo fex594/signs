@@ -1,6 +1,5 @@
 package fex.signs.listeners;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
@@ -10,6 +9,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import fex.signs.signs.CommandTransformer;
 import fex.signs.util.PlayerSign;
+import fex.signs.util.Util;
 
 public class SignClickListener extends MyListener implements Listener {
 
@@ -19,8 +19,7 @@ public class SignClickListener extends MyListener implements Listener {
 		if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (e.getPlayer().hasPermission("signs.user")) {
 				Block b = e.getClickedBlock();	
-				if (b.getType() == Material.WALL_SIGN
-						|| b.getType() == Material.SIGN) {
+				if (Util.isSign(b.getType())) {
 					Sign s = (Sign) b.getState();
 					String firstLine = s.getLine(0);
 					if (firstLine.equalsIgnoreCase("§4[Bauregeln]") || (firstLine.equalsIgnoreCase("§4[Verschönern]"))

@@ -1,15 +1,14 @@
 package fex.signs.listeners;
 
-import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockEvent;
 
 import fex.signs.signs.CommandTransformer;
 import fex.signs.util.Messages;
+import fex.signs.util.Util;
 
 public class BlockBreakListener extends MyListener implements Listener {
 
@@ -20,7 +19,7 @@ public class BlockBreakListener extends MyListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.LOW)
 	public void onBlockBreak(BlockBreakEvent e) {
-		if (isSign(e)) {
+		if (Util.isSign(e.getBlock().getType())) {
 			Sign s = (Sign) e.getBlock().getState();
 			String line = s.getLine(0);
 
@@ -39,12 +38,4 @@ public class BlockBreakListener extends MyListener implements Listener {
 			}
 		}
 	}
-
-	private boolean isSign(BlockEvent e) {
-		if (e.getBlock().getType() == Material.WALL_SIGN || e.getBlock().getType() == Material.SIGN)
-			return true;
-		else
-			return false;
-	}
-
 }

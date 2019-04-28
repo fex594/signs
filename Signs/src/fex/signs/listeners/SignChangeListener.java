@@ -19,6 +19,7 @@ import org.bukkit.util.Vector;
 
 import fex.signs.signs.CommandTransformer;
 import fex.signs.util.Messages;
+import fex.signs.util.Util;
 
 public class SignChangeListener extends MyListener implements Listener {
 
@@ -107,10 +108,10 @@ public class SignChangeListener extends MyListener implements Listener {
 	}
 
 	public boolean canBePlaced(Block b, Player p) {
-		if (b.getType() == Material.SIGN) {
+		if (Util.isStandingSign(b.getType())) {
 			Block down = b.getLocation().add(0, -1, 0).getBlock();
 			return isType(down.getType());
-		} else if (b.getType() == Material.WALL_SIGN) {
+		} else if (Util.isWallSign(b.getType())) {
 
 			/**
 			 * Tempor�re L�sung, Achtung erkennt unerlaubten Untergrund nicht, wenn man
@@ -167,7 +168,7 @@ public class SignChangeListener extends MyListener implements Listener {
 				Material.BIRCH_PRESSURE_PLATE, Material.DARK_OAK_PRESSURE_PLATE, Material.JUNGLE_PRESSURE_PLATE,
 				Material.OAK_PRESSURE_PLATE, Material.SPRUCE_PRESSURE_PLATE, Material.HEAVY_WEIGHTED_PRESSURE_PLATE,
 				Material.LIGHT_WEIGHTED_PRESSURE_PLATE, Material.STONE_PRESSURE_PLATE, Material.CHORUS_FRUIT,
-				Material.CHORUS_FLOWER, Material.CHORUS_PLANT, Material.SIGN, Material.WALL_SIGN, Material.FURNACE, Material.CHEST, Material.TRAPPED_CHEST });
+				Material.CHORUS_FLOWER, Material.CHORUS_PLANT, Material.FURNACE, Material.CHEST, Material.TRAPPED_CHEST });
 		if (blockedList.contains(m))
 			return false;
 		else
