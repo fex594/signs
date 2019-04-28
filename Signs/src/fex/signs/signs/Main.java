@@ -24,7 +24,7 @@ import fex.signs.util.Util;
 
 public class Main extends JavaPlugin {
 	private Messages mess; // Nachrichtensystem an User und Konsole
-	private final String version = "1.1.4";
+	private final String version = "1.2";
 
 	@Override
 	public void onEnable() {
