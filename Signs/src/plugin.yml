@@ -1,6 +1,6 @@
 name: Signs
 main: fex.signs.signs.Main
-version: 1.2
+version: 1.3
 author: fex594
 database: true
 api-version: 1.14

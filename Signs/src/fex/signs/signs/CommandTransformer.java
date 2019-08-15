@@ -53,8 +53,7 @@ public class CommandTransformer {
 	/**
 	 * Wenn Name null: Alle Schilder, sonst nur von Name
 	 * 
-	 * @param name
-	 *            UUID des Spielers
+	 * @param name UUID des Spielers
 	 * @return Liste mit allen abgelaufenen Schildern (eines Spielers)
 	 */
 	public List<PlayerSign> getAbgelaufen(String name) {
@@ -88,8 +87,7 @@ public class CommandTransformer {
 	/**
 	 * Infos über aktives Schild, Kennung über ID
 	 * 
-	 * @param ID
-	 *            ID
+	 * @param ID ID
 	 */
 	public void getInfo(int ID, Player p) {
 		if (ID > maxID) {
@@ -105,9 +103,9 @@ public class CommandTransformer {
 			if (ps == null) {
 				ps = SQLHandler.getInstance().sendResultStatements("SELECT * FROM Schilder WHERE ID = " + ID).get(0);
 			}
-			if(p.hasPermission("signs.support") || p.getUniqueId().toString().equals(ps.getBesitzerUUID())) {
-			mess.toPlayer(p, ps.toString(), Messages.NORMAL);
-			}else {
+			if (p.hasPermission("signs.support") || p.getUniqueId().toString().equals(ps.getBesitzerUUID())) {
+				mess.toPlayer(p, ps.toString(), Messages.NORMAL);
+			} else {
 				mess.toPlayer(p, ps.toUserString(), Messages.NORMAL);
 			}
 		}
@@ -201,22 +199,20 @@ public class CommandTransformer {
 			p.setAblaufDatum(d);
 			finished = 2;
 
-		}else if(d.after(p.getMaxExpandDate())&&p.getAblaufDatum().before(p.getMaxExpandDate())){
+		} else if (d.after(p.getMaxExpandDate()) && p.getAblaufDatum().before(p.getMaxExpandDate())) {
 			finished = 1;
 			p.setAblaufDatum(p.getMaxExpandDate());
-		}
-		else {
+		} else {
 			p.setAblaufDatum(p.getMaxExpandDate());
 		}
 		String args = "UPDATE Schilder SET Datum = '" + p.getAblaufDatum() + "' WHERE ID=" + ID;
 		SQLHandler.getInstance().sendStatement(args);
 		update();
-		if (finished==2) {
+		if (finished == 2) {
 			return "Schild erfolgreich um " + days + " Tage verlängert";
-		} else if(finished==1){
+		} else if (finished == 1) {
 			return "Schild bis maximale Zeit verlängert";
-		}
-		else {
+		} else {
 			return "Maximale Verlängerungszeit erreicht!";
 		}
 	}
@@ -235,6 +231,7 @@ public class CommandTransformer {
 		}
 		return s;
 	}
+
 	public String getLocationInaktive(int ID) {
 		String s = null;
 		for (PlayerSign ps : inactive) {
@@ -260,18 +257,12 @@ public class CommandTransformer {
 	/**
 	 * Legt eine neues Schild in der Datenbank an
 	 * 
-	 * @param name
-	 *            Spielername
-	 * @param date
-	 *            Ablaufdatum
-	 * @param active
-	 *            Aktivität: 1 - Aktiv, 0 - Inaktiv
-	 * @param loc
-	 *            Schildposition
-	 * @param text
-	 *            Beschreibung zum Schild
-	 * @param typ
-	 *            Schild-Typ
+	 * @param name   Spielername
+	 * @param date   Ablaufdatum
+	 * @param active Aktivität: 1 - Aktiv, 0 - Inaktiv
+	 * @param loc    Schildposition
+	 * @param text   Beschreibung zum Schild
+	 * @param typ    Schild-Typ
 	 * @return ID des Schilds
 	 */
 	public int putNewSign(String name, Date date, int active, String loc, String typ, String ersteller, Date lastDate) {
@@ -316,30 +307,32 @@ public class CommandTransformer {
 
 	/**
 	 * Returns a List with active Signs of UserUUID user
+	 * 
 	 * @param user UUID of called User
 	 * @return ResultList, can be null
 	 */
 	public List<PlayerSign> getUserActive(String user) {
 		List<PlayerSign> result = new ArrayList<PlayerSign>();
-		for(PlayerSign ps : active) {
-			if(ps.getBesitzerUUID().equals(user)) {
+		for (PlayerSign ps : active) {
+			if (ps.getBesitzerUUID().equals(user)) {
 				result.add(ps);
 			}
 		}
 		return result;
 	}
-	
-	public List<PlayerSign> getCorruptedSigns(){
+
+	public List<PlayerSign> getCorruptedSigns() {
 		List<PlayerSign> result = new ArrayList<>();
-		for(PlayerSign ps : active) {
-			if(!checkSignLocation(ps))
+		for (PlayerSign ps : active) {
+			if (!checkSignLocation(ps))
 				result.add(ps);
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Returns true if Block at Sign's position is a sign or a wallsign
+	 * 
 	 * @param sign
 	 * @return
 	 */
@@ -348,16 +341,12 @@ public class CommandTransformer {
 		location = location.replace("(", "").replace(")", "");
 		String world = location.substring(0, location.indexOf(":")).replace(":", "");
 		double erster = Integer.parseInt(
-				location.substring(location.indexOf(":"), location.indexOf("/"))
-						.replace(":", "").replace("/", ""))
+				location.substring(location.indexOf(":"), location.indexOf("/")).replace(":", "").replace("/", ""))
 				+ 0.5;
-		double zweiter = Integer.parseInt(
-				location.substring(location.indexOf("/"), location.lastIndexOf("/"))
-						.replace("/", ""));
-		double dritter = Integer.parseInt(
-				location.substring(location.lastIndexOf("/")).replace("/", "")) + 0.5;
-		Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter,
-				dritter);
+		double zweiter = Integer
+				.parseInt(location.substring(location.indexOf("/"), location.lastIndexOf("/")).replace("/", ""));
+		double dritter = Integer.parseInt(location.substring(location.lastIndexOf("/")).replace("/", "")) + 0.5;
+		Location l = new Location(Bukkit.getServer().getWorld(world), erster, zweiter, dritter);
 		return Util.isSign(l);
 	}
 }

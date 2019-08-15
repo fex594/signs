@@ -29,10 +29,8 @@ public class Messages {
 	/**
 	 * Nachricht an User
 	 * 
-	 * @param p
-	 *            Spieler
-	 * @param s
-	 *            Nachricht
+	 * @param p Spieler
+	 * @param s Nachricht
 	 */
 	public void toPlayer(Player p, String s) {
 		toPlayer(p, s, 1);
@@ -41,13 +39,10 @@ public class Messages {
 	/**
 	 * Nachriccht an User mit Dringlichkeit
 	 * 
-	 * @param p
-	 *            Spieler
-	 * @param s
-	 *            Nachricht
-	 * @param type
-	 *            Dringlichkeit (1: Normal/Gold, 2: Wichtig/ Hellrot, 3:
-	 *            Fehler/Dunkelrot
+	 * @param p    Spieler
+	 * @param s    Nachricht
+	 * @param type Dringlichkeit (1: Normal/Gold, 2: Wichtig/ Hellrot, 3:
+	 *             Fehler/Dunkelrot
 	 */
 	public void toPlayer(Player p, String s, int type) {
 		char c = ' ';
@@ -64,19 +59,21 @@ public class Messages {
 	/**
 	 * Nachricht an die Konsole
 	 * 
-	 * @param s
-	 *            Nachricht
+	 * @param s Nachricht
 	 */
 	public void toConsole(String s) {
 		System.out.println(LORE + " " + s);
 	}
 
 	public void toPlayerStaged(Player p, List<String> s, int count, String befehl) {
-		int max = s.size()/5;
-		if(s.size()%5!=0) max++;
-		if (count > max) count = max;
-		if(count <= 0) count = 1;
-		int localInt = (count-1)*5;
+		int max = s.size() / 5;
+		if (s.size() % 5 != 0)
+			max++;
+		if (count > max)
+			count = max;
+		if (count <= 0)
+			count = 1;
+		int localInt = (count - 1) * 5;
 		for (int i = localInt; i <= (localInt + 4); i++) {
 			if (s.size() > i) {
 				p.sendMessage("§6" + s.get(i));
@@ -91,17 +88,16 @@ public class Messages {
 			message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, (befehl + (count - 1))));
 		}
 //		p.spigot().sendMessage(message);
-		
-		TextComponent message2 = new TextComponent(" [Seite "+count+"] ");
+
+		TextComponent message2 = new TextComponent(" [Seite " + count + "] ");
 		message2.setBold(true);
 		message2.setColor(ChatColor.GOLD);
 		message.addExtra(message2);
 //		p.spigot().sendMessage(message2);
 
-
 		TextComponent message3 = new TextComponent("----->");
 		message3.setBold(true);
-		if (localInt+5 >= s.size()) {
+		if (localInt + 5 >= s.size()) {
 			message3.setColor(ChatColor.GRAY);
 		} else {
 			message3.setColor(ChatColor.GOLD);

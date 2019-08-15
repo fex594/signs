@@ -32,7 +32,7 @@ public class SQLHandler {
 		openConnection();
 		setupTable();
 	}
-
+	
 	/**
 	 * Gibt eine Singleton-Instanz von SQLHandler zurück
 	 * 
