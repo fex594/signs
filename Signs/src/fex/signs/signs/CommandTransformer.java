@@ -90,7 +90,7 @@ public class CommandTransformer {
 	 * @param ID ID
 	 */
 	public void getInfo(int ID, Player p) {
-		if (ID > maxID) {
+		if (ID >= maxID) {
 			mess.toPlayer(p, "Kein Schild mit der Nummer " + ID + " vorhanden!", Messages.IMPORTANT);
 		} else {
 			PlayerSign ps = null;
